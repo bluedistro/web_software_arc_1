@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+
+      div {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="generator" content="Jekyll v3.6.0">        
+    <title>Enron Investigation</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+    <link rel="shortcut_icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+</head>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">
+    <img style ="max-width: 60px; margin-top: -7px" src="{{ url_for('static', filename='images/logo.png') }}" alt="Enron Investigation"></<img>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/about_enron/">About Enron</a>
+      </li>
+
+      <li class="nav nav-pills" role="tablist">
+        <a href="{{ url_for('dashboard') }}"><button type="button" class="btn btn-success" aria-label="Left Align">
+            <span class="fa fa-dashboard" aria-hidden="true"></span> Dashboard
+        </button></a>
+      </li>
+
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    
+  </div>
+
+</nav>
+
+</header>
+
+
+<body>
+
+    <div class="border-row" style="width: 100%; margin-bottom: 15px; "></div>
+
+    <div class="container-fluid" align="center" style="min-height: 100%">
+
+        {% block body %} {% endblock %}
+
+    </div>
+
+
+    <script type="text/javacript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javacript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.8.2/umd/popper.js"></script>
+    <script type="text/javacript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script> 
+</body>
+
+</html>
+
+
