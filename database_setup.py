@@ -36,7 +36,7 @@ class database:
 
 
     def register_user(self, firstname, lastname, email, password):
-        error = 'passwords do not match'
+        success = False
         password_hash = generate_password_hash(password)
         user_info = {
             "firstname": firstname,
@@ -44,6 +44,8 @@ class database:
             "email": email,
             "password": password_hash
         }
-        success = True
         user_id = self.users.insert_one(user_info).inserted_id
-        return user_id
+
+        if user_id != None:
+            success = True
+        return user_id, success

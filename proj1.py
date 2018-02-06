@@ -1,17 +1,22 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect
 import werkzeug
 from database_setup import database
 
 app = Flask(__name__)
+app.secret_key = 'some_secret'
 db = database(database='wsa', user_collection='users')
 
 @app.route('/')
-def hello_world():
+def home_1():
+    return render_template('header.html')
+
+@app.route('/home/')
+def home():
     return render_template('header.html')
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    return render_template('header.html')
 
 @app.route('/signup/', methods=['GET', 'POST'])
 def signup():
@@ -24,14 +29,24 @@ def signup():
         confirm_password = request.form['confirm_password']
 
         if password != confirm_password:
-            error = 'Passwords do not match'
-            print(error)
+            message = 'Registration failed. Passwords do not match'
+            print(message)
+            flash('Registration failed. Passwords do not match')
+            return redirect(url_for('home'))
         else:
-            error = ''
-            user_id = db.register_user(firstname=first_name, lastname=last_name, email=email, password=password)
+            user_id, success = db.register_user(firstname=first_name, lastname=last_name, email=email, password=password)
+            if success == True:
+                message = 'Registration successful'
+                print('Registration successful')
+                flash('Registration successful')
+            else:
+                message = 'Registration failed'
+                flash('Registration failed')
+                print('Registration failed!')
 
+            return redirect(url_for('home'))
 
-    return render_template('header.html')
+        # return render_template('header.html', signup_message = message)
 
 
 if __name__ == '__main__':
