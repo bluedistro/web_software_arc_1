@@ -10,7 +10,7 @@
     <link href="https://mdbootstrap.com/previews/docs/latest/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://mdbootstrap.com/previews/docs/latest/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Header</title>
+    <title>Web Software Architecture</title>
 </head>
 <body>
     <header>
@@ -161,12 +161,12 @@
 
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
+                                        <input id="login_username" type="text" class="form-control" name="username" value="" placeholder="email">
                                     </div>
 
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                                        <input id="login_password" type="password" class="form-control" name="password" placeholder="password">
                                     </div>
 
 
@@ -195,7 +195,7 @@
                                     <div class="col-md-12 control">
                                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                                             Don't have an account!
-                                        <a href="{{ url_for('signup') }}" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                        <a href="{{ url_for('signup') }}" data-toggle="modal" data-target=".signup-modal" onClick="$('#loginbox').hide(); $('#signupbox').show()">
                                             Sign Up Here
                                         </a>
                                         </div>
@@ -239,24 +239,31 @@
 {#                                        <input type="text" class="form-control" name="firstname" placeholder="First Name">#}
 {#                                    </div>#}
 {#                                </div>#}
+
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-firstname" type="text" class="form-control" name="firstname" value="" placeholder="firstname">
+                                        <input id="login_firstname" type="text" class="form-control" name="firstname" value="" placeholder="firstname">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-lastname" type="text" class="form-control" name="lastname" value="" placeholder="lastname">
+                                        <input id="login_lastname" type="text" class="form-control" name="lastname" value="" placeholder="lastname">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="email">
+                                        <input id="login_email" type="email" class="form-control" name="email" value="" placeholder="email">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-password" type="password" class="form-control" name="password" value="" placeholder="password">
+                                        <input id="login_password" type="password" class="form-control" name="password" value="" placeholder="password">
+                                    </div>
+
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login_confirm_password" type="password" class="form-control" name="confirm_password" value="" placeholder="confirm password">
                                     </div>
 
 
@@ -271,6 +278,15 @@
                                     </div>
 
 
+                                    <div class="form-group">
+                                        <div class="col-md-12 control">
+                                            <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                                <p>By registering, you agree to the <span style="color: cadetblue">Terms and Conditions</span> of this site</p>
+                                            </div>
+                                        </div>
+                                    </div>
+{##}
+{##}
 {#                                <div class="form-group">#}
 {#                                    <!-- Button -->#}
 {#                                    <div class="col-md-offset-3 col-md-9">#}
@@ -278,7 +294,7 @@
 {#                                        <span style="margin-left:8px;">or</span>#}
 {#                                    </div>#}
 {#                                </div>#}
-
+{##}
 {#                                <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">#}
 {##}
 {#                                    <div class="col-md-offset-3 col-md-9">#}

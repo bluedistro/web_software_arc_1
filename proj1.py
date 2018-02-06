@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 import werkzeug
+import database_setup
 
 app = Flask(__name__)
 
