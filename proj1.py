@@ -31,22 +31,20 @@ def signup():
         if password != confirm_password:
             message = 'Registration failed. Passwords do not match'
             print(message)
-            flash('Registration failed. Passwords do not match')
+            flash(message)
             return redirect(url_for('home'))
         else:
             user_id, success = db.register_user(firstname=first_name, lastname=last_name, email=email, password=password)
             if success == True:
                 message = 'Registration successful'
-                print('Registration successful')
-                flash('Registration successful')
+                print(message)
+                flash(message)
             else:
                 message = 'Registration failed'
-                flash('Registration failed')
-                print('Registration failed!')
+                flash(message)
+                print(message)
 
             return redirect(url_for('home'))
-
-        # return render_template('header.html', signup_message = message)
 
 
 if __name__ == '__main__':
