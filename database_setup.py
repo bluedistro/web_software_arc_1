@@ -30,23 +30,20 @@ class database:
 
     def __init__(self, database, user_collection):
 
-        self.database = database
-        self.users = user_collection
+        self.client = MongoClient()
+        self.database = self.client[database]
+        self.users = self.database[user_collection]
 
-    def register_user(self, firstname, lastname, email, password, confirm_password):
+
+    def register_user(self, firstname, lastname, email, password):
         error = 'passwords do not match'
-        if password != confirm_password:
-            print error
-            success = False
-            return success
-        else:
-            password_hash = generate_password_hash(password)
-            user_info = {
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": email,
-                "password": password_hash
-            }
-            success = True
-            user_id = self.users.insert_one(user_info).inserted_id
-            return user_id, success
+        password_hash = generate_password_hash(password)
+        user_info = {
+            "firstname": firstname,
+            "lastname": lastname,
+            "email": email,
+            "password": password_hash
+        }
+        success = True
+        user_id = self.users.insert_one(user_info).inserted_id
+        return user_id

@@ -1,15 +1,14 @@
 /* for the header video*/
-.whov:hover { /*background-color: #00695c!important;*/ }
+.whov:hover { background-color: #00695c!important; }
 .view {
 	background-position: center center;
 	background-repeat: no-repeat;
 	height: 500px;
 }
 .secondbase {
-    /*background-color: rgba(255,255,255,.6);*/
+    background-color: rgba(255,255,255,.6);
     margin-top: -90px;
 }
-
 
 /* for the modal*/
 .modal  {

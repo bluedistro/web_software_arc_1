@@ -19,7 +19,7 @@
                             <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" class="fa fa-sign-in" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()"></a></div>
                         </div>
                         <div class="panel-body" >
-                            <form id="signupform" class="form-horizontal" role="form">
+                            <form id="signupform" class="form-horizontal" role="form" method="POST" action="{{ url_for('signup') }}">
 
                                 <div id="signupalert" style="display:none" class="alert alert-danger">
                                     <p>Error:</p>
@@ -27,41 +27,43 @@
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label for="firstname" class="col-md-3 control-label">First Name</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login_firstname" type="text" class="form-control" name="firstname" value="" placeholder="&nbsp;firstname">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-md-3 control-label">Last Name</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name">
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="email" class="col-md-3 control-label">Email</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login_lastname" type="text" class="form-control" name="lastname" value="" placeholder="&nbsp;lastname">
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="password" class="col-md-3 control-label">Password</label>
-                                    <div class="col-md-9">
-                                        <input type="password" class="form-control" name="passwd" placeholder="Password">
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                        <input id="login_email" type="email" class="form-control" name="email" value="" placeholder="&nbsp;email">
                                     </div>
-                                </div>
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="login_password" type="password" class="form-control" name="password" value="" placeholder="&nbsp;password">
+                                    </div>
 
 
-                                <div class="form-group">
-                                    <!-- Button -->
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
-{#                                        <span style="margin-left:8px;">or</span>#}
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="login_confirm_password" type="password" class="form-control" name="confirm_password" value="" placeholder="&nbsp;confirm password">
                                     </div>
-                                </div>
+
+
+                                    <div style="margin-top:10px" class="form-group">
+                                        <!-- Button -->
+
+                                        <div class="col-sm-12 controls">
+{#                                          <a id="btn-login" class="btn btn-success">Register</a>#}
+                                          <input type="submit" class="btn btn-success" value="Register" name="Register">
+    {#                                      <a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a>#}
+
+                                        </div>
+                                    </div>
 
 {#                                <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">#}
 {##}
