@@ -25,8 +25,8 @@ def signup():
         first_name = request.form['firstname']
         last_name = request.form['lastname']
         email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+        password = request.form['pass_confirmation']
+        confirm_password = request.form['pass']
 
         if password != confirm_password:
             message = 'Registration failed. Passwords do not match'

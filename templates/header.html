@@ -250,28 +250,41 @@
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login_firstname" type="text" autofocus class="form-control" name="firstname" value="" placeholder="&nbsp;firstname">
+                                        <input id="login_firstname" type="text" autofocus class="form-control"
+                                               data-validation="length"
+                                               data-validation-length="3-12"
+                                                data-validation-error-msg="User name has to be only alphabet value (3-12 chars)"
+                                               name="firstname" value="" placeholder="&nbsp;firstname">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login_lastname" type="text" class="form-control" name="lastname" value="" placeholder="&nbsp;lastname">
+                                        <input id="login_lastname" type="text" class="form-control"
+                                               data-validation="length"
+                                               data-validation-length="3-12"
+                                               data-validation-error-msg="User name has to be only alphabet value (3-12 chars)"
+                                               name="lastname" value="" placeholder="&nbsp;lastname">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                        <input id="login_email" type="email" class="form-control" name="email" value="" placeholder="&nbsp;email">
+                                        <input id="login_email" type="email" class="form-control" data-validation="email" name="email" value="" placeholder="&nbsp;email">
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login_password" type="password" class="form-control" name="password" value="" placeholder="&nbsp;password">
+                                        <input id="login_password" type="password"  class="form-control"
+                                               data-validation="strength"
+                                               data-validation-strength="2"
+                                               name="pass_confirmation" value="" placeholder="&nbsp;password">
                                     </div>
 
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login_confirm_password" type="password" class="form-control" name="confirm_password" value="" placeholder="&nbsp;confirm password">
+                                        <input id="login_confirm_password" type="password"  class="form-control"
+                                               data-validation="confirmation"
+                                               name="pass" value="" placeholder="&nbsp;confirm password">
                                     </div>
 
 
@@ -330,6 +343,20 @@
     <script src="https://mdbootstrap.com/previews/docs/latest/js/mdb.min.js"></script>
     <script src="https://mdbootstrap.com/previews/docs/latest/js/jarallax.js"></script>
     <script src="https://mdbootstrap.com/previews/docs/latest/js/jarallax-video.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script>
+
+        $.validate({
+            modules: 'location, date, security, file',
+            onModulesLoaded: function(){
+                $('#country').suggestCountry();
+            }
+        });
+
+          // Restrict presentation length
+        $('#presentation').restrictLength( $('#pres-max-length') );
+
+    </script>
 
 </body>
 </html>
