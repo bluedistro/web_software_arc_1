@@ -2,8 +2,7 @@ import pymongo
 import pymongo.errors
 from pymongo import MongoClient
 import datetime
-from werkzeug.security import generate_password_hash
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class database:
@@ -52,6 +51,8 @@ class database:
     def login_user(self, email, password):
         emails_doc = []
         passwords_doc = []
+        firstname_doc = []
+        lastname_doc = []
         # password_enc = generate_password_hash('Kewl4life!')
         # decoded = check_password_hash(password_enc, password)
         collection = self.database['users']
@@ -59,20 +60,21 @@ class database:
         for document in cursor:
             emails_doc.append(document['email'])
             passwords_doc.append(document['password'])
+            firstname_doc.append(document['firstname'])
+            lastname_doc.append(document['lastname'])
 
         # data = zip(emails_doc, passwords_doc)
         # print(data)
-        for e, p in zip(emails_doc, passwords_doc):
+        for e, p, f, l in zip(emails_doc, passwords_doc, firstname_doc, lastname_doc):
             if e == unicode(email) and check_password_hash(p, unicode(password)) is True:
                 print('found match')
                 status = True
+                user_firstname = str(f)
+                user_lastname = str(l)
                 break
             else:
                 print('Match not found')
                 status = False
 
 
-        return status
-
-# db = database(database='wsa', user_collection='users')
-# print(db.login_user('bineykingsley36@gmail.com', 'Kewl4life!'))
+        return status, user_firstname, user_lastname
