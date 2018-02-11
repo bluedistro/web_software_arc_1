@@ -114,7 +114,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>&nbsp;Dashboard</a>
                         </li>
                          <li>
                             <a href="#"><i class="fa fa-database fa-fw"></i>&nbsp;Databases<span class="fa arrow"></span></a>
@@ -138,7 +138,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                          <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>Mini-Applications<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>&nbsp;Mini-Applications<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{ url_for('face_swap') }}">Face Swap</a>
@@ -235,15 +235,15 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for item in items %}
-                                                            <tr class="odd gradeX">
-                                                                <td>{{ item.firstname }}</td>
-                                                                <td>{{ item.middlename }}</td>
-                                                                <td>{{ item.lastname }}</td>
-                                                                <td class="center">{{ item.dob }}</td>
-                                                                <td class="center">{{ item.birthplace }}</td>
-                                                            </tr>
-                                                        {% endfor %}
+                                                            {% for item in items %}
+                                                                <tr class="odd gradeX">
+                                                                    <td>{{ item.firstname }}</td>
+                                                                    <td>{{ item.middlename }}</td>
+                                                                    <td>{{ item.lastname }}</td>
+                                                                    <td class="center">{{ item.dob }}</td>
+                                                                    <td class="center">{{ item.birthplace }}</td>
+                                                                </tr>
+                                                            {% endfor %}
                                                         </tbody>
                                                     </table>
                                                     <!-- /.table-responsive -->
@@ -308,8 +308,42 @@
 {#                                    ------------ End of Registration Forms ------------------#}
                             </div>
 {#                            -----------------EDIT MEMBER INFORMATION#}
-                                <div class="tab-pane fade in active" id="edit_member_pills">
+                                <div style="margin-top: 15px;" class="tab-pane fade in active" id="edit_member_pills">
+{#                                    -------------search for user form#}
 
+{#                                    ---------------edit profile table -------------------------#}
+                                    <div class="col-sm-6">
+                                        <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th scope="col">Label</th>
+                                              <th scope="col">Information</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td>First Name:</td>
+                                              <td>Otto</td>
+                                            </tr>
+                                            <tr>
+                                              <td>Middle Name:</td>
+                                              <td>Thornton</td>
+                                            </tr>
+                                            <tr>
+                                              <td>Last Name:</td>
+                                              <td>the Bird</td>
+                                            </tr>
+                                            <tr>
+                                              <td>Date of Birth (mm/dd/yyy):</td>
+                                              <td>02/09/1990</td>
+                                            </tr>
+                                            <tr>
+                                              <td>Town of Birth:</td>
+                                              <td>Aflao</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                    </div>
                                 </div>
 {#                            -----------------END OF EDIT MEMBER INFORMATION#}
                         </div>
@@ -374,10 +408,6 @@
     $('#presentation').restrictLength( $('#pres-max-length') );
 
     </script>
-
-
-
-
 
 </body>
 

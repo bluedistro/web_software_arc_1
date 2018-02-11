@@ -116,3 +116,17 @@ class database:
             dobs.append(str(document['dob']))
             birthplaces.append(str(document['birthplace']))
         return firstnames, middlenames, lastnames, dobs, birthplaces
+
+    def fetch_detail_in_search(self, fname):
+        collection = self.db[self.user_collection]
+        cursor = collection.find({})
+        firstnames = []
+        for document in cursor:
+            firstnames.append(str(document['firstname']))
+        result = [fn for fn in firstnames if fname.lower() in fn.lower()]
+        # print(result)
+        return result
+
+
+# db = database(db='bdr', user_collection='members')
+# print(db.fetch_detail_in_search(fname='Dora'))
