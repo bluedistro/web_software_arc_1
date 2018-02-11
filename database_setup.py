@@ -7,13 +7,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class database:
 
-    def __init__(self, database, user_collection):
+    def __init__(self, db, user_collection):
 
         self.client = MongoClient()
-        self.database = self.client[database]
+        self.db = self.client[db]
         self.user_collection = user_collection
-        self.users = self.database[self.user_collection]
+        self.users = self.db[self.user_collection]
 
+    # user registration
     def register_user(self, firstname, lastname, email, password):
         success = False
         password_hash = generate_password_hash(password)
@@ -39,7 +40,7 @@ class database:
     # temporal validation of email before entry for both live search and final entry
     def validate_email(self, email):
         documents = []
-        collection = self.database['users']
+        collection = self.db['users']
         cursor = collection.find({})
         for document in cursor:
             documents.append(document['email'])
@@ -48,29 +49,31 @@ class database:
         message = [status for em in documents if unicode(email).lower() in em.lower()]
         return message
 
+    # validation of user during login
     def login_user(self, email, password):
         emails_doc = []
         passwords_doc = []
         firstname_doc = []
         lastname_doc = []
-        # password_enc = generate_password_hash('Kewl4life!')
-        # decoded = check_password_hash(password_enc, password)
-        collection = self.database['users']
+        collection = self.db['users']
         cursor = collection.find({})
         for document in cursor:
             emails_doc.append(document['email'])
             passwords_doc.append(document['password'])
             firstname_doc.append(document['firstname'])
             lastname_doc.append(document['lastname'])
-
-        # data = zip(emails_doc, passwords_doc)
-        # print(data)
+        user_firstname = ''
+        user_lastname = ''
         for e, p, f, l in zip(emails_doc, passwords_doc, firstname_doc, lastname_doc):
             if e == unicode(email) and check_password_hash(p, unicode(password)) is True:
                 print('found match')
                 status = True
-                user_firstname = str(f)
-                user_lastname = str(l)
+                if status:
+                    user_firstname = str(f)
+                    user_lastname = str(l)
+                else:
+                    user_firstname = ''
+                    user_lastname = ''
                 break
             else:
                 print('Match not found')
@@ -78,3 +81,43 @@ class database:
 
 
         return status, user_firstname, user_lastname
+
+    def db_member_registration(self, firstname, middlename, lastname, dob, birthplace):
+        success = False
+        user_info = {
+            'firstname': firstname,
+            'middlename': middlename,
+            'lastname': lastname,
+            'dob': dob,
+            'birthplace': birthplace
+        }
+
+        if firstname and lastname and dob and birthplace is not None:
+            success = True
+            user_id = self.users.insert_one(user_info).inserted_id
+        else:
+            success = False
+            user_id = None
+
+        return user_id, success
+
+    def fetch_db_members(self):
+        firstnames = []
+        middlenames = []
+        lastnames = []
+        dobs = []
+        birthplaces = []
+        collection = self.db[self.user_collection]
+        cursor = collection.find({})
+        for document in cursor:
+            firstnames.append(str(document['firstname']))
+            middlenames.append(str(document['middlename']))
+            lastnames.append(str(document['lastname']))
+            dobs.append(str(document['dob']))
+            birthplaces.append(str(document['birthplace']))
+            print(firstnames)
+            print(middlenames)
+            print(lastnames)
+            print(dobs)
+            print(birthplaces)
+        return firstnames, middlenames, lastnames, dobs, birthplaces
