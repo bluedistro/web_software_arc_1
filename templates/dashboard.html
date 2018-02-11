@@ -255,24 +255,6 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{{ url_for('blank') }}">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url_for('login') }}">Login Page</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url_for('panels_wells') }}">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url_for('notifications') }}">Notifications</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -291,10 +273,12 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
-                                        <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Basic Tutorials
-                        </div>
+                    <div class="panel panel-default">
+{#                        <div class="panel-heading">#}
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+{#                        </div>#}
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <!-- Nav tabs -->

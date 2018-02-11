@@ -193,9 +193,12 @@
 
         {#                    ------------- End of Flash Message Displays --------------#}
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Pill Tabs
-                        </div>
+{#                        <div class="panel-heading">#}
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                              <li class="breadcrumb-item active">Birth and Death</li>
+                            </ol>
+{#                        </div>#}
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <!-- Nav tabs -->
