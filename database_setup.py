@@ -115,9 +115,4 @@ class database:
             lastnames.append(str(document['lastname']))
             dobs.append(str(document['dob']))
             birthplaces.append(str(document['birthplace']))
-            print(firstnames)
-            print(middlenames)
-            print(lastnames)
-            print(dobs)
-            print(birthplaces)
         return firstnames, middlenames, lastnames, dobs, birthplaces

@@ -1,17 +1,18 @@
 # TODO: PREVENT URL NAVIGATION OR BACK ARROW TO DASHBOARD PAGE FROM WORKING AFTER LOGOUT
-# TODO: SEARCH FOR THE RIGHT WAY TO ACTUALLY REDIRECT TO THE HOMEPAGE OF A WEB APP
-# TODO: GET THE USERNAME OF THE USER LOGGED IN
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, Response
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
 from database_setup import database
 import json
+from datetime import timedelta
 
 # config
 app = Flask(__name__)
 app.secret_key = 'some_secret_xxx'
+# app.permanent_session_lifetime = timedelta(seconds=1)
 db = database(db='wsa', user_collection='users')
 
+# databases creation
 bdr_db = database(db='bdr', user_collection='members')
 nhis_db = database(db='nhis', user_collection='members')
 dvla_db = database(db='dvla', user_collection='members')
@@ -71,7 +72,7 @@ def login():
         else:
             return abort(401)
     else:
-        return render_template('header.html')
+        return render_template('homepage.html')
 
 
 @app.route('/logout/')
@@ -105,12 +106,14 @@ def load_user(userid):
 
 @app.route('/')
 def home_1():
-    return render_template('header.html')
+    # session.permanent = True
+    return render_template('homepage.html')
 
 
 @app.route('/home/')
 def home():
-    return render_template('header.html')
+    session.permanent = True
+    return render_template('homepage.html')
 
 
 @app.route('/email_validate/', methods=['POST', 'GET'])
@@ -119,10 +122,30 @@ def email_validate():
     message = database.validate_email(db, email=email)
     return json.dumps({"results": message})
 
+@app.route('/settings/', methods=['GET', 'POST'])
+def settings():
+    return render_template('settings.html')
+
+# ------------------- Mini Applications Routing ----------------------------
+@app.route('/face_swap/', methods=['POST', 'GET'])
+@login_required
+def face_swap():
+    return render_template('face_swap.html')
+
+@app.route('/mag/', methods=['POST', 'GET'])
+@login_required
+def mag():
+    return render_template('mag.html')
+
+@app.route('/crawley/', methods=['POST', 'GET'])
+@login_required
+def crawley():
+    return render_template('crawley.html')
 
 # --------------- DATABASE ACCESS AND INTERACTIONS --------------------------
 # Birth and Death Routing
 @app.route('/bdr/', methods=['POST', 'GET'])
+@login_required
 def bdr():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -160,6 +183,7 @@ def bdr():
 
 # Driver and Vehicle Licensing Authority Routing
 @app.route('/dvla/', methods=['POST', 'GET'])
+@login_required
 def dvla():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -197,6 +221,7 @@ def dvla():
 
 # Ghana Electoral Commission Routing
 @app.route('/gec/', methods=['POST', 'GET'])
+@login_required
 def gec():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -234,6 +259,7 @@ def gec():
 
 # Ghana Passport Service Routing
 @app.route('/gps/', methods=['POST', 'GET'])
+@login_required
 def gps():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -271,6 +297,7 @@ def gps():
 
 # National Health Insurance Scheme Routing
 @app.route('/nhis/', methods=['POST', 'GET'])
+@login_required
 def nhis():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -308,6 +335,7 @@ def nhis():
 
 # National Identification Authority Routing
 @app.route('/nia/', methods=['POST', 'GET'])
+@login_required
 def nia():
     if request.method == 'POST':
         firstname = request.form['db_firstname']
@@ -374,8 +402,6 @@ def signup():
                 print(message)
 
             return redirect(url_for('home'), code=302)
-
-
 
 if __name__ == '__main__':
     app.run()
