@@ -18,12 +18,12 @@ db = database(db='wsa', collection='users')
 
 # mongodb databases creation
 bdr_db = database(db='bdr', collection='members')
-nhis_db = database(db='nhis', collection='members')
 gec_db = database(db='gec', collection='members')
 gps_db = database(db='gps', collection='members')
 
 # sqlite database creation
 dvla_db = sqldb(db='dvla')
+nhis_db = sqldb(db='nhis')
 
 # postgres database creation
 nia_db = pgdb()
@@ -322,7 +322,7 @@ def nhis():
         birthplace = request.form['db_birthplace']
 
         if firstname and lastname and dob and birthplace is not None:
-            user_id, success = nhis_db.db_member_registration(firstname=firstname, middlename=middlename,
+            success = nhis_db.db_member_registration(firstname=firstname, middlename=middlename,
                                                              lastname=lastname, dob=dob,
                                                              birthplace=birthplace)
             flash('User has been registered successfully!')

@@ -6,6 +6,11 @@ class pgdb:
 
     def __init__(self):
         self.params = config()
+        try:
+            self.create_table()
+        except Exception as error:
+            print(str(error))
+            pass
 
     def connect(self):
         ''' Connect to the PostgreSQL database server'''

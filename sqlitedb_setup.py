@@ -5,7 +5,11 @@ class sqldb:
 
     def __init__(self, db):
         self.db = sqlite3.connect('sqlite_db/'+db)
-        # self.create_member_table()
+        try:
+            self.create_member_table()
+        except Exception as error:
+            print(str(error))
+            pass
 
     def create_member_table(self):
         cursor = self.db.cursor()
@@ -51,7 +55,15 @@ class sqldb:
                 birthplaces.append(str(row[4]))
 
             cursor.close()
-
-            return firstnames, middlenames, lastnames, dobs, birthplaces
+            if firstnames and lastnames and dobs and birthplaces is not None:
+                return firstnames, middlenames, lastnames, dobs, birthplaces
+            else:
+                firstnames.append('')
+                middlenames.append('')
+                lastnames.append('')
+                dobs.append('')
+                birthplaces.append('')
+                return firstnames, middlenames, lastnames, dobs, birthplaces
         except Exception as error:
             print(str(error))
+
