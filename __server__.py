@@ -1,37 +1,46 @@
-# TODO: PREVENT URL NAVIGATION OR BACK ARROW TO DASHBOARD PAGE FROM WORKING AFTER LOGOUT
-
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, Response
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
-from database_setup import database
+# databases
+from mongodb_setup import database
+from sqlitedb_setup import sqldb
+from postgresdb_setup import pgdb
+
 import json
+from random import randint
 from datetime import timedelta
+
 
 # config
 app = Flask(__name__)
-app.secret_key = 'some_secret_xxx'
+app.secret_key = str(randint(1000, 10000))
 # app.permanent_session_lifetime = timedelta(seconds=1)
-db = database(db='wsa', user_collection='users')
+db = database(db='wsa', collection='users')
 
-# databases creation
-bdr_db = database(db='bdr', user_collection='members')
-nhis_db = database(db='nhis', user_collection='members')
-dvla_db = database(db='dvla', user_collection='members')
-gec_db = database(db='gec', user_collection='members')
-nia_db = database(db='nia', user_collection='members')
-gps_db = database(db='gps', user_collection='members')
+# mongodb databases creation
+bdr_db = database(db='bdr', collection='members')
+nhis_db = database(db='nhis', collection='members')
+gec_db = database(db='gec', collection='members')
+gps_db = database(db='gps', collection='members')
 
+# sqlite database creation
+dvla_db = sqldb(db='dvla')
+
+# postgres database creation
+nia_db = pgdb()
+
+# user authentication config
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-
+# User authentication class with UserMixin
 class User(UserMixin):
 
     def __init__(self, email):
         self.id = email
 
     def __repr__(self):
-        return "%s%s" % (self.id)
+        return "%s" % (self.id)
 
 
 # dashboard url
@@ -49,8 +58,7 @@ def login():
         password = request.form['password']
         # try thr state of remember me and manually set it to off when empty
         try:
-            remember = request.form["remember"]
-            remember = str(remember)
+            remember = str(request.form["remember"])
         except Exception as e:
             print(str(e))
             remember = 'off'
@@ -68,6 +76,7 @@ def login():
             session['username'] = username
             session['firstname'] = firstname
             session['lastname'] = lastname
+
             return redirect(next or url_for('dashboard'))
         else:
             return abort(401)
@@ -112,7 +121,7 @@ def home_1():
 
 @app.route('/home/')
 def home():
-    session.permanent = True
+    # session.permanent = True
     return render_template('homepage.html')
 
 
@@ -123,6 +132,7 @@ def email_validate():
     return json.dumps({"results": message})
 
 @app.route('/settings/', methods=['GET', 'POST'])
+@login_required
 def settings():
     return render_template('settings.html')
 
@@ -143,6 +153,7 @@ def crawley():
     return render_template('crawley.html')
 
 # --------------- DATABASE ACCESS AND INTERACTIONS --------------------------
+''' Routing for the six database connections are basically the same -> code duplication'''
 # Birth and Death Routing
 @app.route('/bdr/', methods=['POST', 'GET'])
 @login_required
@@ -172,7 +183,7 @@ def bdr():
 
     elif request.method == 'GET':
         firstnames, middlenames, lastnames, dobs, birthplaces = bdr_db.fetch_db_members()
-        items = []
+        items = [] # fetch the info of users into a dict and push into list
         for fn, mn, ln, dob, bp in zip(firstnames, middlenames, lastnames, dobs, birthplaces):
             an_item = dict(firstname=fn, middlename=mn, lastname=ln, dob=dob, birthplace=bp)
             items.append(an_item)
@@ -197,7 +208,7 @@ def dvla():
         birthplace = request.form['db_birthplace']
 
         if firstname and lastname and dob and birthplace is not None:
-            user_id, success = dvla_db.db_member_registration(firstname=firstname, middlename=middlename,
+            success = dvla_db.db_member_registration(firstname=firstname, middlename=middlename,
                                                              lastname=lastname, dob=dob,
                                                              birthplace=birthplace)
             flash('User has been registered successfully!')

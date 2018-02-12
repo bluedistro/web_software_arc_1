@@ -1,18 +1,17 @@
-import pymongo
-import pymongo.errors
+# This script handles all database transactions primarily
+
 from pymongo import MongoClient
-import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class database:
 
-    def __init__(self, db, user_collection):
+    def __init__(self, db, collection):
 
         self.client = MongoClient()
         self.db = self.client[db]
-        self.user_collection = user_collection
-        self.users = self.db[self.user_collection]
+        self.collection = collection
+        self.users = self.db[self.collection]
 
     # user registration
     def register_user(self, firstname, lastname, email, password):
@@ -107,7 +106,7 @@ class database:
         lastnames = []
         dobs = []
         birthplaces = []
-        collection = self.db[self.user_collection]
+        collection = self.db[self.collection]
         cursor = collection.find({})
         for document in cursor:
             firstnames.append(str(document['firstname']))
@@ -118,7 +117,7 @@ class database:
         return firstnames, middlenames, lastnames, dobs, birthplaces
 
     def fetch_detail_in_search(self, fname):
-        collection = self.db[self.user_collection]
+        collection = self.db[self.collection]
         cursor = collection.find({})
         firstnames = []
         for document in cursor:
@@ -128,5 +127,5 @@ class database:
         return result
 
 
-# db = database(db='bdr', user_collection='members')
+# db = database(db='bdr', collection='members')
 # print(db.fetch_detail_in_search(fname='Dora'))
