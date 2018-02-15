@@ -4,6 +4,7 @@ from flask.ext.login import LoginManager, UserMixin, login_required, login_user,
 from mongodb_setup import database
 from sqlitedb_setup import sqldb
 from postgresdb_setup import pgdb
+from pymssqldb_setup import pms2ql
 
 import json
 from random import randint
@@ -18,7 +19,6 @@ db = database(db='wsa', collection='users')
 
 # mongodb databases creation
 bdr_db = database(db='bdr', collection='members')
-gec_db = database(db='gec', collection='members')
 gps_db = database(db='gps', collection='members')
 
 # sqlite database creation
@@ -27,6 +27,9 @@ nhis_db = sqldb(db='nhis')
 
 # postgres database creation
 nia_db = pgdb()
+
+# mssql database creation
+gec_db = pms2ql()
 
 # user authentication config
 login_manager = LoginManager()
@@ -107,19 +110,12 @@ def page_not_found(e):
     flash(message)
     return redirect(url_for('home'))
 
-
 @login_manager.user_loader
 def load_user(userid):
     return User(userid)
 
 
 @app.route('/')
-def home_1():
-    # session.permanent = True
-    return render_template('homepage.html')
-
-
-@app.route('/home/')
 def home():
     # session.permanent = True
     return render_template('homepage.html')
@@ -246,7 +242,7 @@ def gec():
         birthplace = request.form['db_birthplace']
 
         if firstname and lastname and dob and birthplace is not None:
-            user_id, success = gec_db.db_member_registration(firstname=firstname, middlename=middlename,
+            success = gec_db.db_member_registration(firstname=firstname, middlename=middlename,
                                                              lastname=lastname, dob=dob,
                                                              birthplace=birthplace)
             flash('User has been registered successfully!')
@@ -413,6 +409,7 @@ def signup():
                 print(message)
 
             return redirect(url_for('home'), code=302)
+
 
 if __name__ == '__main__':
     app.run()

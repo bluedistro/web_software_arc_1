@@ -3,7 +3,6 @@
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 class database:
 
     def __init__(self, db, collection):
@@ -25,7 +24,7 @@ class database:
         }
         status = self.validate_email(email=email)
         if firstname and lastname and email and password is not None:
-            if status is not "Email already exist!, please use another email":
+            if status is not "Email has already been registered!, please use another email":
                 user_id = self.users.insert_one(user_info).inserted_id
             else:
                 success = False
