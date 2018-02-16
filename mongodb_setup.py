@@ -3,6 +3,7 @@
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class database:
 
     def __init__(self, db, collection):
@@ -122,9 +123,4 @@ class database:
         for document in cursor:
             firstnames.append(str(document['firstname']))
         result = [fn for fn in firstnames if fname.lower() in fn.lower()]
-        # print(result)
         return result
-
-
-# db = database(db='bdr', collection='members')
-# print(db.fetch_detail_in_search(fname='Dora'))

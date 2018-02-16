@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, Response
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
+
 # databases
 from mongodb_setup import database
 from sqlitedb_setup import sqldb
 from postgresdb_setup import pgdb
 from pymssqldb_setup import pms2ql
+from pymysqldb_setup import mysql
+from mariadb_setup import maria
+
 
 import json
 from random import randint
@@ -19,11 +23,17 @@ db = database(db='wsa', collection='users')
 
 # mongodb databases creation
 bdr_db = database(db='bdr', collection='members')
-gps_db = database(db='gps', collection='members')
+# gps_db = database(db='gps', collection='members')
+
+# mysql database creation
+gps_db = mysql()
 
 # sqlite database creation
 dvla_db = sqldb(db='dvla')
-nhis_db = sqldb(db='nhis')
+# nhis_db = sqldb(db='nhis')
+
+# mariadb database creation
+nhis_db = maria()
 
 # postgres database creation
 nia_db = pgdb()
@@ -280,7 +290,7 @@ def gps():
         birthplace = request.form['db_birthplace']
 
         if firstname and lastname and dob and birthplace is not None:
-            user_id, success = gps_db.db_member_registration(firstname=firstname, middlename=middlename,
+            success = gps_db.db_member_registration(firstname=firstname, middlename=middlename,
                                                               lastname=lastname, dob=dob,
                                                               birthplace=birthplace)
             flash('User has been registered successfully!')

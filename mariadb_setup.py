@@ -1,22 +1,12 @@
-from mysql import connector
+from mysql import connector as mariadb
 
-class mysql:
+class maria:
 
-    def __init__(self, db='gps'):
+    def __init__(self, db='nhis'):
         self.user='kingsley'
         self.pwd = 'Kewl4life!'
         self.db = db
         self.host = '127.0.0.1'
-        # self.cnx = mysql.connector.connect(user='kingsley', password='Kewl4life!',
-        #                       host='127.0.0.1', database='gps')
-
-        # cnx.close()
-
-        try:
-            self.create_table()
-        except Exception as e:
-            print(str(e))
-            pass
 
 
     def create_table(self):
@@ -31,8 +21,8 @@ class mysql:
             ''')
 
         try:
-            cnx = connector.connect(user='kingsley', password='Kewl4life!',
-                                          host='127.0.0.1', database='gps')
+            cnx = mariadb.connect(user='kingsley', password='Kewl4life!',
+                                          host='127.0.0.1', database='nhis')
             cursor = cnx.cursor()
             cursor.execute(command)
             print('Table created!')
@@ -44,14 +34,13 @@ class mysql:
             pass
 
 
-
     def db_member_registration(self, firstname, middlename, lastname, dob, birthplace):
         sql = '''
          INSERT INTO members VALUES(%s, %s, %s, %s, %s)
         '''
         try:
-            cnx = connector.connect(user='kingsley', password='Kewl4life!',
-                                          host='127.0.0.1', database='gps')
+            cnx = mariadb.connect(user='kingsley', password='Kewl4life!',
+                                          host='127.0.0.1', database='nhis')
             cursor = cnx.cursor()
             cursor.execute(sql, (firstname, middlename, lastname, dob, birthplace))
             print('member successfully registered!')
@@ -67,8 +56,8 @@ class mysql:
 
     def fetch_db_members(self):
         try:
-            cnx = connector.connect(user='kingsley', password='Kewl4life!',
-                                          host='127.0.0.1', database='gps')
+            cnx = mariadb.connect(user='kingsley', password='Kewl4life!',
+                                          host='127.0.0.1', database='nhis')
             cursor = cnx.cursor()
             sql = '''
                 SELECT firstname, middlename, lastname, dob, birthplace FROM members
@@ -96,6 +85,7 @@ class mysql:
             print(str(e))
 
 
-# msl = mysql()
-# msl.db_member_registration('Joseph', 'Obiri', 'Yeboah' ,'09/08/1945', 'Tamale')
-# msl.fetch_db_members()
+
+
+# mar = maria()
+# mar.db_member_registration('Wisdom', 'Adzorgenu', 'Obed' ,'09/08/1945', 'Ho')
