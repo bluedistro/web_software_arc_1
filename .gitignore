@@ -1,4 +1,4 @@
-/__server__.pyc
+__server__.pyc
 /dbconns/firebase_setup.pyc
 /dbconns/mariadb_setup.pyc
 /dbconns/mongodb_setup.pyc
