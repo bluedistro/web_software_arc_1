@@ -1,19 +1,20 @@
-from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, Response
-from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
-
-# databases
-from mongodb_setup import database
-from sqlitedb_setup import sqldb
-from postgresdb_setup import pgdb
-from pymssqldb_setup import pms2ql
-from pymysqldb_setup import mysql
-from mariadb_setup import maria
-
-
 import json
 from random import randint
-from datetime import timedelta
+import sys
 
+from flask import Flask, render_template, request, url_for, flash, redirect, session, abort
+from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
+
+# link to path
+sys.path.append('dbconns')
+
+# database connections
+from mariadb_setup import maria
+from mongodb_setup import database
+from postgresdb_setup import pgdb
+from pymysqldb_setup import mysql
+from sqlitedb_setup import sqldb
+from pymssqldb_setup import pms2ql
 
 # config
 app = Flask(__name__)
@@ -23,7 +24,6 @@ db = database(db='wsa', collection='users')
 
 # mongodb databases creation
 bdr_db = database(db='bdr', collection='members')
-# gps_db = database(db='gps', collection='members')
 
 # mysql database creation
 gps_db = mysql()
