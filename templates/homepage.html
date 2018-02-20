@@ -30,7 +30,7 @@
                 <a class="nav-link waves-effect waves-light" data-toggle="modal" data-target=".login-modal">Login&nbsp;<i class="fa fa-sign-in"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link waves-effect waves-light" data-toggle="modal" data-target=".signup-modal">Sign Up&nbsp;<i class="fa fa-user-plus"></i></a>
+                <a class="nav-link waves-effect waves-light" data-toggle="modal" data-target=".signup-modal">Sign Up&nbsp;(MongoDB)<i class="fa fa-user-plus"></i></a>
             </li>
 {#            <li class="nav-item">#}
 {#                <a class="nav-link waves-effect waves-light">14 <i class="fa fa-envelope"></i></a>#}
@@ -370,6 +370,7 @@
 {#        	    var value = $('#signup_email').val();#}
 				value = value.trim(); // remove any spaces around the text
 				if(value !== ""){ // don't make requests with an empty string
+                    $("#results").html("<i class=\"fa fa-spinner fa-spin\"><\i>");
 					$.ajax({
 						url: "email_validate",
 						data: {email: value},

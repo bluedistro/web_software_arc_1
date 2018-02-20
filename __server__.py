@@ -21,10 +21,12 @@ from firebase_setup import firebee
 app = Flask(__name__)
 app.secret_key = str(randint(1000, 10000))
 # app.permanent_session_lifetime = timedelta(seconds=1)
+
+# mongodb for system users sign ups and authentication
 db = database(db='wsa', collection='users')
 
-# mongodb databases creation
 # bdr_db = database(db='bdr', collection='members')
+# firebase database creation
 bdr_db = firebee()
 
 # mysql database creation
@@ -32,7 +34,6 @@ gps_db = mysql()
 
 # sqlite database creation
 dvla_db = sqldb(db='dvla')
-# nhis_db = sqldb(db='nhis')
 
 # mariadb database creation
 nhis_db = maria()

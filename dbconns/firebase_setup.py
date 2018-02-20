@@ -52,7 +52,3 @@ class firebee:
         else:
             success = False
         return success
-
-
-firebee().fetch_db_members()
-# firebee().db_member_registration('Michael', 'Nana', 'Clinton' ,'09/08/190', 'Techiman')
