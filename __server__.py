@@ -15,6 +15,7 @@ from postgresdb_setup import pgdb
 from pymysqldb_setup import mysql
 from sqlitedb_setup import sqldb
 from pymssqldb_setup import pms2ql
+from firebase_setup import firebee
 
 # config
 app = Flask(__name__)
@@ -23,7 +24,8 @@ app.secret_key = str(randint(1000, 10000))
 db = database(db='wsa', collection='users')
 
 # mongodb databases creation
-bdr_db = database(db='bdr', collection='members')
+# bdr_db = database(db='bdr', collection='members')
+bdr_db = firebee()
 
 # mysql database creation
 gps_db = mysql()
@@ -176,7 +178,7 @@ def bdr():
         birthplace = request.form['db_birthplace']
 
         if firstname and lastname and dob and birthplace is not None:
-            user_id, success = bdr_db.db_member_registration(firstname=firstname, middlename=middlename,
+            success = bdr_db.db_member_registration(firstname=firstname, middlename=middlename,
                                                              lastname=lastname, dob=dob,
                                                              birthplace=birthplace)
             flash('User has been registered successfully!')
