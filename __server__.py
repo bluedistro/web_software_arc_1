@@ -119,7 +119,7 @@ def non_existent_page(e):
 
 @app.errorhandler(401)
 def page_not_found(e):
-    message = "Invalid Username or password,\nPlease check credentials and login again or \nSign up first if you haven't"
+    message = "Invalid Username or password,\nPlease check credentials and log in again or \nSign up first if you haven't"
     flash(message)
     return redirect(url_for('home'))
 
