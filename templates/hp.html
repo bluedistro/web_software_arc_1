@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WSA</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/landing-page.min.css') }}" rel="stylesheet">
+
+    <style>
+
+        .btn {
+            border-radius: 0px;
+        }
+
+        .form-control, .input-group-addon, .form-check-label, .panel-info {
+            border-radius: 0px !important;
+        }
+
+
+       .stumbit-id {
+          color: #5bc0de !important;
+       }
+
+       i {
+          color: #5bc0de !important;
+       }
+
+      .catch-phrase {
+        color: white;
+        text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+      }
+
+      .sign-up-link {
+        color: white;
+      }
+
+      .button-sign-up-change {
+        border-radius: 0px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top: 7px;
+        margin-right: 25px;
+        color: #fff;
+        background-color: #5bc0de;
+      }
+
+      .button-jumbotron {
+        border-radius: 0px;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 25px !important;
+        background-color: #5bc0de;
+          border: none;
+        color: white !important;
+      }
+
+      nav {
+          margin-bottom: 0px !important;
+          font-size: 15px;
+      }
+
+      .text-white {
+          color: white;!important;
+      }
+
+      .jumbotron-text {
+          font-size: 40px !important;
+          font-family: fantasy;
+          font-weight: 100;
+          padding-bottom: 30px;
+          margin-top: 70px;
+      }
+
+      .header-row {
+         padding-bottom: 150px !important;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+
+
+  <!--navbar new-->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand stumbit-id" href="#">WSA</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" data-toggle="modal" data-target=".login-modal">Log In</a></li>
+        <li>
+            <button class="btn btn-info button-sign-up-change" data-toggle="modal" data-target=".signup-modal">
+                <a href="#" class="nav-link sign-up-link">Sign Up</a>
+            </button>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <!--end of navbar new-->
+
+    <!-- Masthead -->
+    <header class="masthead text-white text-center">
+      <div class="container">
+        <div class="row header-row">
+          <div class="col-xl-9 mx-auto">
+            <h1 class="mb-5 jumbotron-text"><span class="catch-phrase">Web Software Architecture<br></span></h1>
+          </div>
+          <div class="col-xl-12 mx-auto">
+                <button data-toggle="modal" data-target=".signup-modal" class="btn btn-primary button-jumbotron"><a href="#" class="sign-up-link">
+                  Join for free
+                </a></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+  {#    ----------------- display signup messages ---------------------------------------#}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+      <div class="alert alert-info fade in alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <li>{{ message }}</li>
+      </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{#    ------------------ end of sign up messages display --------------------------------#}
+
+    <!-- Footer -->
+    <footer class="footer bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+            <ul class="list-inline mb-2">
+              <li class="list-inline-item">
+                <a href="#" class="nav-link">About</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#" class="nav-link">Contact</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#" class="nav-link">Terms of Use</a>
+              </li>
+              <li class="list-inline-item">&sdot;</li>
+              <li class="list-inline-item">
+                <a href="#" class="nav-link">Privacy Policy</a>
+              </li>
+            </ul>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; WSA 2018. All Rights Reserved.</p>
+          </div>
+          <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item mr-3">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-facebook fa-2x fa-fw"></i>
+                </a>
+              </li>
+              <li class="list-inline-item mr-3">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-twitter fa-2x fa-fw"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-instagram fa-2x fa-fw"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+{#   ----------------------------------------- LOGIN MODAL TO BE USED -----------------------------------------....#}
+  <div class="modal fade login-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+
+        <div id="loginbox" style="margin-top:80px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title">Sign In</div>
+{#                        <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>#}
+                    </div>
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+{#                        Login form starts here ...#}
+                        <form id="loginform" class="form-horizontal" method="POST" action="{{ url_for('login') }}" role="form">
+
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="login_username" required type="text" class="form-control" name="username" value="" placeholder="&nbsp;email">
+                                    </div>
+
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="login_password" required type="password" class="form-control" name="password" placeholder="&nbsp;password">
+                                    </div>
+
+                                  <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" checked=checked name="remember">
+                                    <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                                  </div>
+
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+                                      <input type="submit" value="Login" class="btn btn-info btn-block">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12 control">
+                                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                            Don't have an account! It's easy, just <span style="color: cadetblue"><strong>sign up</strong></span>. No <strike>payment</strike> required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+  </div>
+
+
+
+{#    -------------------SIGN UP MODAL TO BE USED ---------------------------------------------------------#}
+        <div class="modal fade signup-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                <div id="signupbox" style="display:block; margin-top:20px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign Up</div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()"></a></div>
+                        </div>
+                        <div class="panel-body" >
+
+                            <form id="signupform" class="form-horizontal" role="form" method="POST" action="{{ url_for('signup') }}">
+
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="signup_firstname" type="text" class="form-control" required
+                                               data-validation="length"
+                                               data-validation-regexp="^([a-zA-Z]+)$"
+                                               data-validation-length="3-12"
+                                                data-validation-error-msg="User name has to be only alphabet value (3-12 chars)"
+                                               name="firstname" value="" placeholder="&nbsp;firstname">
+                                    </div>
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="signup_lastname" type="text" class="form-control" required
+                                               data-validation="length"
+                                               data-validation-regexp="^([a-zA-Z]+)$"
+                                               data-validation-length="3-12"
+                                               data-validation-error-msg="User name has to be only alphabet value (3-12 chars)"
+                                               name="lastname" value="" placeholder="&nbsp;lastname">
+                                    </div>
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                        <input id="signup_email" type="email" onblur="validateMail(this.value)" required class="form-control" data-validation="email" name="email" value="" placeholder="&nbsp;email">
+                                        <div id="results" style="color: red;"></div>
+                                    </div>
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="signup_password" type="password"  class="form-control" required
+                                               data-validation="strength"
+                                               data-validation-strength="2"
+                                               name="pass_confirmation" value="" placeholder="&nbsp;password">
+                                    </div>
+
+
+                                    <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="signup_confirm_password" type="password"  class="form-control" required
+                                               data-validation="confirmation"
+                                               name="pass" value="" placeholder="&nbsp;confirm password">
+                                    </div>
+
+
+                                    <div style="margin-top:10px" class="form-group">
+                                        <!-- Button -->
+
+                                        <div class="col-sm-12 controls">
+                                            <input type="submit" id="register_button" class="btn btn-info btn-block" value="Register" name="Register">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12 control">
+                                            <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                                <p>By registering, you agree to the <span style="color: cadetblue">Terms and Conditions</span> of this site.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                 </div>
+        </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script src="https://mdbootstrap.com/previews/docs/latest/js/mdb.min.js"></script>
+    <script src="https://mdbootstrap.com/previews/docs/latest/js/jarallax.js"></script>
+    <script src="https://mdbootstrap.com/previews/docs/latest/js/jarallax-video.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+ <script>
+
+        $.validate({
+            modules: 'location, date, security, file',
+            onModulesLoaded: function(){
+                $('#country').suggestCountry();
+            }
+        });
+
+          // Restrict presentation length
+        $('#presentation').restrictLength( $('#pres-max-length') );
+
+    </script>
+    <script>
+
+{#            $(document).ready(function(){#}
+                 function validateMail(value){
+{#        	    var value = $('#signup_email').val();#}
+				value = value.trim(); // remove any spaces around the text
+				if(value !== ""){ // don't make requests with an empty string
+                    $("#results").html("<i class=\"fa fa-spinner fa-spin\"><\i>");
+					$.ajax({
+						url: "email_validate",
+						data: {email: value},
+						dataType: "json",
+						success: function(data){
+						    var res = "";
+                            res += "<div>" + data.results + "<div>";
+{#							console.log(data.results);#}
+                            $("#results").html(res);
+
+                            if (data.results == "Email has already been registered!, please use another email"){
+                                $('#register_button').prop('disabled', true);
+                            }else{
+                                $('#register_button').prop('disabled', false);
+                            }
+						}
+					}); // end of the ajax query
+				}
+				else{
+					$("#results").html(""); // set the results empty in case of empty string
+				}
+			}
+{#            });#}
+
+    </script>
+
+  </body>
+
+</html>

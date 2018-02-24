@@ -97,7 +97,7 @@ def login():
         else:
             return abort(401)
     else:
-        return render_template('homepage.html')
+        return render_template('hp.html')
 
 
 @app.route('/logout/')
@@ -131,7 +131,7 @@ def load_user(userid):
 @app.route('/')
 def home():
     # session.permanent = True
-    return render_template('homepage.html')
+    return render_template('hp.html')
 
 
 @app.route('/email_validate/', methods=['POST', 'GET'])
