@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WSA | Crawler Results</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{{ url_for('static', filename='vendor/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
+
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='dist/css/sb-admin-2.css') }}" rel="stylesheet">
+
+
+    <!-- Custom Fonts -->
+    <link href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('dashboard') }}">WSA</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <!-- /.dropdown-messages -->
+                </li>
+
+                <!-- /.dropdown -->
+
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>{{ session.username }}</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="{{ url_for('login') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>&nbsp;Dashboard</a>
+                        </li>
+                         <li>
+                            <a href="#"><i class="fa fa-database fa-fw"></i>&nbsp;Databases<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ url_for('nhis') }}">National Health Insurance Scheme</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('gps') }}">Ghana Passports Service</a>
+                                </li>
+                                    <li>
+                                    <a href="{{ url_for('dvla') }}">Driver and Vehicle Licensing Authority</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('nia') }}">National Identification Authority</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('gec') }}">Ghana Electoral Commission</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                         <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>&nbsp;Final Application<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ url_for('crawl_return') }}">OGC Site Identifier</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#search_results" data-toggle="tab">Search Results</a>
+                                </li>
+                                <li><a href="#url_server_info" data-toggle="tab">Url Server Info</a>
+                                </li>
+                                <li><a href="#graphical_display" data-toggle="tab">Graphical Display (Google Maps)</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="search_results">
+                                    <div>
+                                      <h3 class="page-header">
+                                        <span style="color: black; font-family: KacstLetter; font-weight: bolder">J</span>
+                                        <span style="color: blue; font-family: KacstLetter; font-weight: bolder">u</span>
+                                        <span style="color: blue; font-family: KacstLetter; font-weight: bolder">r</span>
+                                        <span style="color: blue; font-family: KacstLetter; font-weight: bolder">l</span>
+                                        <span style="color: yellow; font-family: KacstLetter; font-weight: bolder">g</span>
+                                        <span style="color: green; font-family: KacstLetter; font-weight: bolder">l</span>
+                                        <span style="color: red; font-family: KacstLetter; font-weight: bolder">e</span> |
+                                        Crawled links from: <a href="{{ f_u }}"><span style="color: #5bc0de">{{ f_u }}</span></a>
+                                      </h3>
+                                    </div>
+                                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                {#                        <thead>#}
+                {#                            <tr>#}
+                {#                                <th>Crawled urls from: {{ f_u }} </th>#}
+                {#                            </tr>#}
+                {#                        </thead>#}
+                                        <tbody>
+                                        {% for item in response %}
+                                            <tr class="odd gradeX">
+                                                <td><a href="{{ item }}" target="_blank">{{ item }}</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="tab-pane fade" id="url_server_info">
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+                                        <h4 style="color: green">In Progress...</h4>
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+{#                                        <h4>National Health Insurance Scheme</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+{#                                        <h4>Ghana Passport Service</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+{#                                        <h4>Driver and Vehicle Licensing Authority</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+{#                                        <h4>National Identification Authority</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div>#}
+{#                                        <h4>Ghana Electoral Commission</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
+{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
+{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
+{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
+{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
+{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+                                </div>
+                                <div class="tab-pane fade" id="graphical_display">
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+                                        <h4 style="color: green">In Progress...</h4>
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
+{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
+{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
+{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
+{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
+{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
+{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
+{#                                            officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div style="border-bottom: 1px solid lightgray">#}
+{#                                        <h4>Mathematical Algorithm Generator (MAG)</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
+{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
+{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
+{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
+{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
+{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
+{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
+{#                                            officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div>#}
+{#                                        <h4>Crawley (A Basic Web Crawler)</h4>#}
+{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
+{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
+{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
+{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
+{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
+{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
+{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
+{#                                            officia deserunt mollit anim id est laborum.#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                </div>#}
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/metisMenu/metisMenu.min.js') }}"></script>
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='dist/js/sb-admin-2.js') }}"></script>
+
+
+</body>
+
+</html>

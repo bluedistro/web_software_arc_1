@@ -7,3 +7,5 @@ dbconns/postgresdb_setup.pyc
 dbconns/pymssqldb_setup.pyc
 dbconns/pymysqldb_setup.pyc
 dbconns/sqlitedb_setup.pyc
+post_test.py
+spatial_data/

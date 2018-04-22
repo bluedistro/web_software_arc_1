@@ -1,1 +1,14 @@
 FLASK_APP=main.py FLASK_DEBUG=1 python -m flask run
+
+Spatial thing to crawl on
+# Symbology Encoding, Styled Layer Descriptor
+
+
+TODO: HOW TO GO ABOUT THE FINAL PROJECT
+1. Build a search bar for typing the website to search for.
+2. Make a single dir where the crawled sites sill be temporarily stored
+3. Create a page where the result of all websites crawled will be displayed
+4. For each website crawled, find the type and version of the geospatial service,
+   server, data format used, the location of the server hosting the site (its longitude and latitude)
+5. Store these information together with the website in a postgres database
+

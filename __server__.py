@@ -1,11 +1,11 @@
 import json
 from random import randint
-import sys
+import sys, requests, ast
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
 
-# link to path
+# link to dbs path
 sys.path.append('dbconns')
 
 # database connections
@@ -48,6 +48,7 @@ gec_db = pms2ql()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
 
 # User authentication class with UserMixin
 class User(UserMixin):
@@ -123,6 +124,7 @@ def page_not_found(e):
     flash(message)
     return redirect(url_for('home'))
 
+
 @login_manager.user_loader
 def load_user(userid):
     return User(userid)
@@ -140,10 +142,12 @@ def email_validate():
     message = database.validate_email(db, email=email)
     return json.dumps({"results": message})
 
+
 @app.route('/settings/', methods=['GET', 'POST'])
 @login_required
 def settings():
     return render_template('settings.html')
+
 
 # ------------------- Mini Applications Routing ----------------------------
 @app.route('/face_swap/', methods=['POST', 'GET'])
@@ -151,18 +155,21 @@ def settings():
 def face_swap():
     return render_template('face_swap.html')
 
+
 @app.route('/mag/', methods=['POST', 'GET'])
 @login_required
 def mag():
     return render_template('mag.html')
+
 
 @app.route('/crawley/', methods=['POST', 'GET'])
 @login_required
 def crawley():
     return render_template('crawley.html')
 
+
 # --------------- DATABASE ACCESS AND INTERACTIONS --------------------------
-''' Routing for the six database connections are basically the same -> code duplication'''
+''' Routing for the six database connections are basically the same'''
 # Birth and Death Routing
 @app.route('/bdr/', methods=['POST', 'GET'])
 @login_required
@@ -200,6 +207,7 @@ def bdr():
         return render_template('bdr.html', items=items)
 
     return render_template('bdr.html')
+
 
 # Driver and Vehicle Licensing Authority Routing
 @app.route('/dvla/', methods=['POST', 'GET'])
@@ -239,6 +247,7 @@ def dvla():
 
     return render_template('dvla.html')
 
+
 # Ghana Electoral Commission Routing
 @app.route('/gec/', methods=['POST', 'GET'])
 @login_required
@@ -276,6 +285,7 @@ def gec():
         return render_template('gec.html', items=items)
 
     return render_template('gec.html')
+
 
 # Ghana Passport Service Routing
 @app.route('/gps/', methods=['POST', 'GET'])
@@ -315,6 +325,7 @@ def gps():
 
     return render_template('gps.html')
 
+
 # National Health Insurance Scheme Routing
 @app.route('/nhis/', methods=['POST', 'GET'])
 @login_required
@@ -352,6 +363,7 @@ def nhis():
         return render_template('nhis.html', items=items)
 
     return render_template('nhis.html')
+
 
 # National Identification Authority Routing
 @app.route('/nia/', methods=['POST', 'GET'])
@@ -422,6 +434,52 @@ def signup():
                 print(message)
 
             return redirect(url_for('home'), code=302)
+
+
+@app.route('/crawl_results_disp/', methods=['GET'])
+def crawl_results_disp():
+    return render_template('crawl_results.html')
+
+@app.route('/crawl_return/', methods=['GET', 'POST'])
+def crawl_return():
+
+    if request.method == 'GET':
+        render_template('crawley.html')
+    elif request.method == 'POST':
+        full_url = request.form['url']
+        json_url = {'url':str(full_url)}
+        url = 'http://localhost:8100/api/url'
+        # response is a json dump of all the crawled urls
+        response = requests.post(url=url, data=json.dumps(json_url))
+        # extract the value portion (of type list) from the unicode response,
+        # convert the unicode to type string and re-convert to type dict, and
+        # take only a single list to avoid duplicates
+        response = (ast.literal_eval(str(response.text))).values()[0]
+        print(response)
+        # render_template('crawl_results.html', response = response)
+        return render_template('crawl_results.html', code=303, response = response, f_u = str(full_url))
+        # return redirect(url_for('crawl_results_disp', response = response), code=303)
+    return render_template('crawley.html')
+
+# @app.route('/crawl_return/', methods=['GET', 'POST'])
+# def crawl_return():
+#     if request.method == 'GET':
+#         render_template('crawley.html')
+#
+#     elif request.method == 'POST':
+#         # The following four lines send a command to start the crawler
+#         full_url = request.form['url']
+#         json_url = {'url': str(full_url)}
+#         post_url = 'http://localhost:8100/api/start_crawler'
+#         post_url_response = requests.post(url=post_url, data=json.dumps(json_url))
+#
+#         # These lines also sends a get_request to get the fetched data available
+#         get_data_url = 'http://localhost:8100/api/fetch_data'
+#         get_data_url_response = requests.get(get_data_url)
+#         get_data_url_response = (ast.literal_eval(str(get_data_url_response.text))).values()[0]
+#         print(get_data_url_response)
+#         return render_template('crawl_results.html', code=303, response = get_data_url_response, f_u = str(full_url))
+#     return render_template('crawley.html')
 
 
 if __name__ == '__main__':
