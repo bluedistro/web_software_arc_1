@@ -1,6 +1,9 @@
 import json
 from random import randint
 import sys, requests, ast
+import gmplot
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
@@ -19,6 +22,10 @@ from firebase_setup import firebee
 
 # config
 app = Flask(__name__)
+app.config['GOOGLEMAPS_KEY'] = " AIzaSyAmWVYvtUGO73UWOqUq4hnANEHn9zJEvQI "
+# initialize google maps
+GoogleMaps(app)
+app.jinja_env.filters['zip'] = zip
 app.secret_key = str(randint(1000, 10000))
 # app.permanent_session_lifetime = timedelta(seconds=1)
 
@@ -73,7 +80,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # try thr state of remember me and manually set it to off when empty
+        # try the state of remember me and manually set it to off when empty
         try:
             remember = str(request.form["remember"])
         except Exception as e:
@@ -455,11 +462,44 @@ def crawl_return():
         # convert the unicode to type string and re-convert to type dict, and
         # take only a single list to avoid duplicates
         response = (ast.literal_eval(str(response.text))).values()[0]
-        print(response)
-        # render_template('crawl_results.html', response = response)
-        return render_template('crawl_results.html', code=303, response = response, f_u = str(full_url))
-        # return redirect(url_for('crawl_results_disp', response = response), code=303)
+        # get unique urls to avoid duplicates
+        info_list = set()
+        for res in response:
+            info_list.add(res.split('/')[2])
+        info_list = list(info_list)
+
+
+        # Fetch the url information of the urls
+        url_info_api = 'http://localhost:8100/api/get_url_info'
+        url_lists = {'url_list': info_list}
+        url_info_api_response  = requests.post(url=url_info_api, data=json.dumps(url_lists))
+        url_info_api_response = (ast.literal_eval(str(url_info_api_response.text))).values()[0]
+        # get a string list of the longitude and latitude sep by a comma
+        long_lat_list = []
+        for dict_item in url_info_api_response:
+            long_lat_list.append(dict_item.get("loc"))
+
+        # segregate into only longitudes and latitudes
+        longitudes = []
+        latitudes = []
+        for val in long_lat_list:
+            longitudes.append(float(val.split(',')[0]))
+            latitudes.append(float(val.split(',')[1]))
+        final_points = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)]
+
+        # plot with google maps beginning with a random destination (I chose Ghana :)
+        mymap = Map(
+            identifier="view-side",
+            lat = 8.0000,
+            lng = -2.0000,
+            markers = final_points
+        )
+
+        return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
+                              url_info_response = url_info_api_response,  f_u = str(full_url),
+                               mymap = mymap)
     return render_template('crawley.html')
+
 
 # @app.route('/crawl_return/', methods=['GET', 'POST'])
 # def crawl_return():
