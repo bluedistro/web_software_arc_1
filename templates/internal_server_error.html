@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>ERROR 404</title>
+        <title>Internal Server Error</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -30,10 +30,20 @@
 <body>
     <div class="row">
         <div class="container">
-            <div class="col-lg-12" style="margin-top: 20px; margin-left: 400px">
-                <h1 style="margin-left: 5px">ERROR 404</h1>
-                <h3>PAGE NOT FOUND</h3>
-                <a style="margin-left: 25px;" href="{{ url_for('dashboard') }}">Go back to home</a>
+            <div class="col-lg-12" style="margin-top: 20px; margin-left: 350px">
+                <h1 style="margin-left: 80px">OUCHHH!!</h1>
+                <h3 style="margin-left: 40px;">Some witch is at work :(</h3>
+                <p>Though I ain't perfect and can therefore
+                be the <br> cause of this error, I will still encourage you to
+                make sure you:</p>
+                <ul>
+                    <li>Entered a correct url</li>
+                    <li>Have a good internet connection</li>
+                </ul>
+                <p>
+                    Otherwise, you can feel free and go to sleep :)
+                </p>
+                <a style="margin-left: 80px;" href="{{ url_for('crawl_return') }}">Go back to search page</a>
             </div>
         </div>
     </div>

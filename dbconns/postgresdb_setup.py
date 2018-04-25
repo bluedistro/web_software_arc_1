@@ -63,6 +63,7 @@ class pgdb:
             if conn is not None:
                 conn.close()
 
+
     def db_member_registration(self, firstname, middlename, lastname, dob, birthplace):
         '''Insert a new member into the nia database'''
         sql = '''

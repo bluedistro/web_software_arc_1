@@ -4,6 +4,7 @@ import sys, requests, ast
 import gmplot
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
+from full_countries import countries
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
@@ -19,6 +20,7 @@ from pymysqldb_setup import mysql
 from sqlitedb_setup import sqldb
 from pymssqldb_setup import pms2ql
 from firebase_setup import firebee
+from gisdb_setup import gisdb
 
 # config
 app = Flask(__name__)
@@ -50,6 +52,9 @@ nia_db = pgdb()
 
 # mssql database creation
 gec_db = pms2ql()
+
+# gis database creation
+gis_db = gisdb()
 
 # user authentication config
 login_manager = LoginManager()
@@ -444,10 +449,12 @@ def signup():
 
 
 @app.route('/crawl_results_disp/', methods=['GET'])
+@login_required
 def crawl_results_disp():
     return render_template('crawl_results.html')
 
 @app.route('/crawl_return/', methods=['GET', 'POST'])
+@login_required
 def crawl_return():
 
     if request.method == 'GET':
@@ -456,48 +463,67 @@ def crawl_return():
         full_url = request.form['url']
         json_url = {'url':str(full_url)}
         url = 'http://localhost:8100/api/url'
-        # response is a json dump of all the crawled urls
-        response = requests.post(url=url, data=json.dumps(json_url))
-        # extract the value portion (of type list) from the unicode response,
-        # convert the unicode to type string and re-convert to type dict, and
-        # take only a single list to avoid duplicates
-        response = (ast.literal_eval(str(response.text))).values()[0]
-        # get unique urls to avoid duplicates
-        info_list = set()
-        for res in response:
-            info_list.add(res.split('/')[2])
-        info_list = list(info_list)
+        try:
+            # response is a json dump of all the crawled urls
+            response = requests.post(url=url, data=json.dumps(json_url))
+            # extract the value portion (of type list) from the unicode response,
+            # convert the unicode to type string and re-convert to type dict, and
+            # take only a single list to avoid duplicates
+            response = (ast.literal_eval(str(response.text))).values()[0]
+            # get unique urls to avoid duplicates
+            info_list = set()
+            for res in response:
+                info_list.add(res.split('/')[2])
+            info_list = list(info_list)
 
 
-        # Fetch the url information of the urls
-        url_info_api = 'http://localhost:8100/api/get_url_info'
-        url_lists = {'url_list': info_list}
-        url_info_api_response  = requests.post(url=url_info_api, data=json.dumps(url_lists))
-        url_info_api_response = (ast.literal_eval(str(url_info_api_response.text))).values()[0]
-        # get a string list of the longitude and latitude sep by a comma
-        long_lat_list = []
-        for dict_item in url_info_api_response:
-            long_lat_list.append(dict_item.get("loc"))
+            # Fetch the url information of the urls
+            url_info_api = 'http://localhost:8100/api/get_url_info'
+            url_lists = {'url_list': info_list}
+            url_info_api_response  = requests.post(url=url_info_api, data=json.dumps(url_lists))
+            url_info_api_response = (ast.literal_eval(str(url_info_api_response.text))).values()[0]
+            # print('URL INFORMATION')
+            # print(url_info_api_response)
 
-        # segregate into only longitudes and latitudes
-        longitudes = []
-        latitudes = []
-        for val in long_lat_list:
-            longitudes.append(float(val.split(',')[0]))
-            latitudes.append(float(val.split(',')[1]))
-        final_points = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)]
+            # insert the data into the gisdb
+            result, error = gis_db.insertDictData(url_info_api_response)
+            if result:
+                flash('Url information has been saved to database successfully!')
+                print('Url information has been saved to database successfully!')
+            else:
+                flash('Problems encountered saving information to database.'
+                          ' Please refresh page to try again!'+' ('+str(error)+')')
+                print('Problems encountered saving information to database!.'
+                              ' Please refresh page to try again')
 
-        # plot with google maps beginning with a random destination (I chose Ghana :)
-        mymap = Map(
-            identifier="view-side",
-            lat = 8.0000,
-            lng = -2.0000,
-            markers = final_points
-        )
+            # get a string list of the longitude and latitude sep by a comma
+            long_lat_list = []
+            for dict_item in url_info_api_response:
+                long_lat_list.append(dict_item.get("loc"))
 
-        return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
-                              url_info_response = url_info_api_response,  f_u = str(full_url),
-                               mymap = mymap)
+            # segregate into only longitudes and latitudes
+            longitudes = []
+            latitudes = []
+
+            for val in long_lat_list:
+                longitudes.append(float(val.split(',')[0]))
+                latitudes.append(float(val.split(',')[1]))
+
+            # plot with google maps beginning with a random destination (I chose UG location :)
+            mymap = Map(
+                identifier="view-side",
+                lat = float(long_lat_list[0].split(',')[1]),
+                lng = float(long_lat_list[0].split(',')[0]),
+                zoom = 1,
+                markers = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)]
+            )
+
+            return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
+                                  url_info_response = url_info_api_response,  f_u = str(full_url),
+                                   mymap = mymap)
+        except Exception as e:
+            print(str(e))
+            return render_template('internal_server_error.html')
     return render_template('crawley.html')
 
 

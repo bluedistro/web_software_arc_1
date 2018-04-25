@@ -88,6 +88,12 @@
          padding-bottom: 150px !important;
       }
 
+      .info-box {
+          border-radius: 0px !important;
+          margin-left: 25px;
+          color: red;
+      }
+
     </style>
 
   </head>
@@ -137,18 +143,18 @@
     </header>
 
   {#    ----------------- display signup messages ---------------------------------------#}
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul>
-    {% for message in messages %}
-      <div class="alert alert-info fade in alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <li>{{ message }}</li>
-      </div>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <div class="col-lg-11 alert alert-info fade in alert-dismissable info-box">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <li>{{ message }}</li>
+          </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 {#    ------------------ end of sign up messages display --------------------------------#}
 
     <!-- Footer -->

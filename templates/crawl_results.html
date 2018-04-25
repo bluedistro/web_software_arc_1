@@ -39,6 +39,63 @@
             width: 100%;
             height: 100%;
         }
+
+        #search {
+            float: right;
+            margin-top: 9px;
+            width: 350px;
+        }
+
+        input[type='text']{ font-size: 17px; }
+
+        .search {
+            padding: 5px 0;
+            width: 330px;
+            height: 40px;
+            position: relative;
+            left: 10px;
+            float: left;
+            line-height: 22px;
+            margin-bottom: 20px;
+        }
+
+            .search input {
+                position: absolute;
+                width: 0px;
+                float: Left;
+                margin-left: 310px;
+                -webkit-transition: all 0.7s ease-in-out;
+                -moz-transition: all 0.7s ease-in-out;
+                -o-transition: all 0.7s ease-in-out;
+                transition: all 0.7s ease-in-out;
+                height: 40px;
+                line-height: 18px;
+                padding: 0 2px 0 2px;
+                border-radius:1px;
+            }
+
+                .search:hover input, .search input:focus {
+                    width: 300px;
+                    margin-left: 0px;
+                }
+
+        .cus-btn {
+            height: 40px;
+            position: absolute;
+            right: 0;
+            top: 5px;
+            border-radius:1px;
+        }
+
+        .info-box {
+            border-radius: 0px !important;
+        }
+
+        #map {
+            width: 400px;
+            height:400px;
+        }
+
     </style>
 </head>
 
@@ -155,10 +212,28 @@
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
+                        {% with messages = get_flashed_messages() %}
+                              {% if messages %}
+                                <ul>
+                                {% for message in messages %}
+                                    <div class="row">
+                                     <div>
+                                          <div class="alert alert-info fade in alert-dismissable info-box">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>{{ message }}</strong>
+                                          </div>
+                                      </div>
+                                    </div>
+                                {% endfor %}
+                                </ul>
+                              {% endif %}
+                          {% endwith %}
 
                         <div class="panel-body">
+
+                           <!-- End of Alternate search box building -->
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
+                            <ul class="nav nav-tabs" style="margin-top: 10px;">
                                 <li class="active"><a href="#search_results" data-toggle="tab">Search Results</a>
                                 </li>
                                 <li><a href="#url_server_info" data-toggle="tab">Url Server Info</a>
@@ -179,7 +254,7 @@
                                         <span style="color: yellow; font-family: KacstLetter; font-weight: bolder">g</span>
                                         <span style="color: green; font-family: KacstLetter; font-weight: bolder">l</span>
                                         <span style="color: red; font-family: KacstLetter; font-weight: bolder">e</span> |
-                                        Crawled links from: <a href="{{ f_u }}"><span style="color: #5bc0de">{{ f_u }}</span></a>
+                                        Crawled links from: <a href="{{ f_u }}" target="_blank"><span style="color: #5bc0de">{{ f_u }}</span></a>
                                       </h3>
                                     </div>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -205,7 +280,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Url</th>
-                                                <th>Server Location (Long. and Lat.)</th>
+                                                <th>Server Location (Lat. and Long.)</th>
                                                 <th>City Located</th>
                                                 <th>Region Located</th>
                                                 <th>Country Located</th>
@@ -227,108 +302,17 @@
                                         {% endfor %}
                                         </tbody>
                                     </table>
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div style="border-bottom: 1px solid lightgray">#}
-{#                                        <h4>National Health Insurance Scheme</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div style="border-bottom: 1px solid lightgray">#}
-{#                                        <h4>Ghana Passport Service</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div style="border-bottom: 1px solid lightgray">#}
-{#                                        <h4>Driver and Vehicle Licensing Authority</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div style="border-bottom: 1px solid lightgray">#}
-{#                                        <h4>National Identification Authority</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div>#}
-{#                                        <h4>Ghana Electoral Commission</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod#}
-{#                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,#}
-{#                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo#}
-{#                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse#}
-{#                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat#}
-{#                                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
                                 </div>
-                                <div class="tab-pane fade" id="graphical_display">
+                                <div class="tab-pane fade" id="graphical_display" id="map">
 {#                                    <div style="border-bottom: 1px solid lightgray">#}
 {#                                        <h4 style="color: green">In Progress...</h4>#}
-                                        <div style="margin-top: 20px;" id="map">{{ mymap.html }}</div>
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
-{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
-{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
-{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
-{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
-{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
-{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
-{#                                            officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div style="border-bottom: 1px solid lightgray">#}
-{#                                        <h4>Mathematical Algorithm Generator (MAG)</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
-{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
-{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
-{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
-{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
-{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
-{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
-{#                                            officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                    <div>#}
-{#                                        <h4>Crawley (A Basic Web Crawler)</h4>#}
-{#                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,#}
-{#                                            sed do eiusmod tempor incididunt ut labore et dolore magna#}
-{#                                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation#}
-{#                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.#}
-{#                                            Duis aute irure dolor in reprehenderit in voluptate velit#}
-{#                                            esse cillum dolore eu fugiat nulla pariatur. Excepteur#}
-{#                                            sint occaecat cupidatat non proident, sunt in culpa qui#}
-{#                                            officia deserunt mollit anim id est laborum.#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                </div>#}
+                                        <div style="margin-top: 20px;" id="map">
+                                            {{ mymap.html }}
+                                        </div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
-
+                      </div>
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->

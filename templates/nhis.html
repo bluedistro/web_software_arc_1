@@ -42,6 +42,14 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+
+         .info-box {
+             border-radius: 0px !important;
+         }
+
+     </style>
+
 </head>
 
 <body>
@@ -180,7 +188,7 @@
                         {% for message in messages %}
                             <div class="row">
                              <div class="col-lg-12">
-                                  <div class="alert alert-info fade in alert-dismissable">
+                                  <div class="alert alert-info fade in alert-dismissable info-box">
                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                     {{ message }}
                                   </div>
