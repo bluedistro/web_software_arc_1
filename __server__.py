@@ -515,7 +515,8 @@ def crawl_return():
                 lat = float(long_lat_list[0].split(',')[1]),
                 lng = float(long_lat_list[0].split(',')[0]),
                 zoom = 1,
-                markers = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)]
+                markers = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)],
+                fit_markers_to_bounds=True
             )
 
             return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
