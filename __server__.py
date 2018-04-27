@@ -472,9 +472,14 @@ def crawl_return():
             response = (ast.literal_eval(str(response.text))).values()[0]
             # get unique urls to avoid duplicates
             info_list = set()
-            for res in response:
-                info_list.add(res.split('/')[2])
-            info_list = list(info_list)
+            try:
+                for res in response:
+                    info_list.add(res.split('/')[2])
+                    print('On unique url: {}'.format(res))
+                info_list = list(info_list)
+            except Exception as e:
+                print('URL Stripping Error!')
+                print(e)
 
 
             # Fetch the url information of the urls
@@ -509,7 +514,7 @@ def crawl_return():
                 longitudes.append(float(val.split(',')[0]))
                 latitudes.append(float(val.split(',')[1]))
 
-            # plot with google maps beginning with a random destination (I chose UG location :)
+            # plot with google maps with initial center being the first long. and lat. in the list
             mymap = Map(
                 identifier="view-side",
                 lat = float(long_lat_list[0].split(',')[1]),
