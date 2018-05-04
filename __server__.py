@@ -47,7 +47,7 @@ app.config['UPLOAD_FOLDER'] = 'data/'
 app.config['THUMBNAIL_FOLDER'] = 'data/thumbnail/'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set(['txt', 'gif', 'png', 'jpg', 'jpeg', 'bmp', 'rar', 'zip', '7zip', 'doc', 'docx'])
+ALLOWED_EXTENSIONS = set(['gif', 'png', 'jpg', 'jpeg'])
 IGNORED_FILES = set(['.gitignore'])
 
 bootstrap = Bootstrap(app)
@@ -708,7 +708,6 @@ def get_file(filename):
 @app.route('/upload_files', methods=['GET', 'POST'])
 def upload_files():
     return render_template('recognition.html')
-
 
 
 if __name__ == '__main__':

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$USER_HOME$/PycharmProjects/keras-learn/crawley/.idea/crawley.iml" filepath="$USER_HOME$/PycharmProjects/keras-learn/crawley/.idea/crawley.iml" />
       <module fileurl="file://$USER_HOME$/PycharmProjects/open-cv-projects/facenet_fr/.idea/facenet_fr.iml" filepath="$USER_HOME$/PycharmProjects/open-cv-projects/facenet_fr/.idea/facenet_fr.iml" />
-      <module fileurl="file://$USER_HOME$/Documents/file-uploads/flask-file-uploader/.idea/flask-file-uploader.iml" filepath="$USER_HOME$/Documents/file-uploads/flask-file-uploader/.idea/flask-file-uploader.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/proj1.iml" filepath="$PROJECT_DIR$/.idea/proj1.iml" />
     </modules>
   </component>
