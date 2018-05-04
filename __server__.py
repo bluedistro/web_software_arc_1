@@ -1,13 +1,24 @@
 import json
 from random import randint
 import sys, requests, ast
-import gmplot
+import gmplot, os
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 from full_countries import countries
+import numpy as np
 
-from flask import Flask, render_template, request, url_for, flash, redirect, session, abort
+from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, send_from_directory
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
+
+# FACE RECOGNITION
+import PIL
+from PIL import Image
+import simplejson
+import traceback
+import cv2
+from werkzeug import secure_filename
+from lib.upload_file import uploadfile
+from flask_bootstrap import Bootstrap
 
 # link to dbs path
 sys.path.append('dbconns')
@@ -30,6 +41,16 @@ GoogleMaps(app)
 app.jinja_env.filters['zip'] = zip
 app.secret_key = str(randint(1000, 10000))
 # app.permanent_session_lifetime = timedelta(seconds=1)
+
+# IMAGE UPLOAD
+app.config['UPLOAD_FOLDER'] = 'data/'
+app.config['THUMBNAIL_FOLDER'] = 'data/thumbnail/'
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+
+ALLOWED_EXTENSIONS = set(['txt', 'gif', 'png', 'jpg', 'jpeg', 'bmp', 'rar', 'zip', '7zip', 'doc', 'docx'])
+IGNORED_FILES = set(['.gitignore'])
+
+bootstrap = Bootstrap(app)
 
 # mongodb for system users sign ups and authentication
 db = database(db='wsa', collection='users')
@@ -552,6 +573,159 @@ def crawl_return():
 #         print(get_data_url_response)
 #         return render_template('crawl_results.html', code=303, response = get_data_url_response, f_u = str(full_url))
 #     return render_template('crawley.html')
+
+
+# COMPUTER VISION FACIAL RECOGNITION PORTION
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def gen_file_name(filename):
+    """
+    If file was exist already, rename it and return a new name
+    """
+
+    i = 1
+    while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+        name, extension = os.path.splitext(filename)
+        filename = '%s_%s%s' % (name, str(i), extension)
+        i += 1
+
+    return filename
+
+
+def create_thumbnail(image):
+    try:
+        base_width = 80
+        img = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], image))
+        w_percent = (base_width / float(img.size[0]))
+        h_size = int((float(img.size[1]) * float(w_percent)))
+        img = img.resize((base_width, h_size), PIL.Image.ANTIALIAS)
+        img.save(os.path.join(app.config['THUMBNAIL_FOLDER'], image))
+
+        return True
+
+    except:
+        print traceback.format_exc()
+        return False
+
+
+@app.route("/upload", methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        files = request.files['file']
+
+        if files:
+            filename = secure_filename(files.filename)
+            filename = gen_file_name(filename)
+            mime_type = files.content_type
+
+
+            if not allowed_file(files.filename):
+                result = uploadfile(name=filename, type=mime_type, size=0, not_allowed_msg="File type not allowed")
+
+            else:
+                # save file to disk
+                uploaded_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                files.save(uploaded_file_path)
+
+                # FACE RECOGNITION PROCESS
+                recognition_url = 'http://localhost:5030/api/face_recognition'
+                # prepare headers for http request
+                content_type = 'image/jpeg'
+                headers = {'content-type': content_type}
+
+                image = cv2.imread(uploaded_file_path)
+                _, image_extension = os.path.splitext(filename)
+                _, img_encoded = cv2.imencode(image_extension,image)
+                # send http request with image and receive response
+                print('sending request...')
+                response = requests.post(url=recognition_url, data=img_encoded.tostring(), headers=headers)
+                response = str(json.loads(response.text)['data'])
+                print('response: {}'.format(response))
+                # END OF FACE RECOGNITION PROCESS
+
+                # create thumbnail after saving
+                if mime_type.startswith('image'):
+                    create_thumbnail(filename)
+
+                # get file size after saving
+                size = os.path.getsize(uploaded_file_path)
+
+                # return json for js call back
+                result = uploadfile(name=filename, type=mime_type, rec_res=response, size=size)
+
+            return simplejson.dumps({"files": [result.get_file()]})
+
+    if request.method == 'GET':
+        # get all file in ./data directory
+        files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if
+                 os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], f)) and f not in IGNORED_FILES]
+
+        file_display = []
+
+        for f in files:
+            size = os.path.getsize(os.path.join(app.config['UPLOAD_FOLDER'], f))
+            file_saved = uploadfile(name=f, size=size)
+            file_display.append(file_saved.get_file())
+
+        return simplejson.dumps({"files": file_display})
+
+    return render_template('recognition.html')
+    # return redirect(url_for('upload_files'))
+
+
+@app.route("/delete/<string:filename>", methods=['DELETE'])
+def delete(filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file_thumb_path = os.path.join(app.config['THUMBNAIL_FOLDER'], filename)
+
+    if os.path.exists(file_path):
+        try:
+            os.remove(file_path)
+
+            if os.path.exists(file_thumb_path):
+                os.remove(file_thumb_path)
+
+            return simplejson.dumps({filename: 'True'})
+        except:
+            return simplejson.dumps({filename: 'False'})
+
+
+# serve static files
+@app.route("/thumbnail/<string:filename>", methods=['GET'])
+def get_thumbnail(filename):
+    return send_from_directory(app.config['THUMBNAIL_FOLDER'], filename=filename)
+
+
+@app.route("/data/<string:filename>", methods=['GET'])
+def get_file(filename):
+    return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER']), filename=filename)
+
+
+# @app.route('/recognition/', methods=['POST', 'GET'])
+# def recognition():
+#     if request.method == 'POST':
+#         file = request.files['image']
+#         api_format = {"image_data" : file}
+#         api_url = 'http://localhost:5030/api/face_recognition'
+#         # returns the result of the recognition
+#         # name -> if person is known, bla bla bla
+#         print('before request is made...')
+#         response = requests.post(url=api_url, data=json.dumps(api_format))
+#         # return the informaton to the front end of to the user
+#         print('response is:{}'.format(response))
+#         return render_template('index.html')
+#     elif request.method == 'GET':
+#         return render_template('index.html')
+#     return render_template('index.html')
+
+@app.route('/upload_files', methods=['GET', 'POST'])
+def upload_files():
+    return render_template('recognition.html')
+
 
 
 if __name__ == '__main__':

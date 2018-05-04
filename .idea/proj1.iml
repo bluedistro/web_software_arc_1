@@ -6,6 +6,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bootstrap-datepicker" level="application" />
     <orderEntry type="module" module-name="crawley" />
+    <orderEntry type="module" module-name="facenet_fr" />
+    <orderEntry type="module" module-name="flask-file-uploader" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
