@@ -705,23 +705,6 @@ def get_file(filename):
     return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER']), filename=filename)
 
 
-# @app.route('/recognition/', methods=['POST', 'GET'])
-# def recognition():
-#     if request.method == 'POST':
-#         file = request.files['image']
-#         api_format = {"image_data" : file}
-#         api_url = 'http://localhost:5030/api/face_recognition'
-#         # returns the result of the recognition
-#         # name -> if person is known, bla bla bla
-#         print('before request is made...')
-#         response = requests.post(url=api_url, data=json.dumps(api_format))
-#         # return the informaton to the front end of to the user
-#         print('response is:{}'.format(response))
-#         return render_template('index.html')
-#     elif request.method == 'GET':
-#         return render_template('index.html')
-#     return render_template('index.html')
-
 @app.route('/upload_files', methods=['GET', 'POST'])
 def upload_files():
     return render_template('recognition.html')
