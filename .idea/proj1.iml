@@ -7,6 +7,9 @@
     <orderEntry type="library" name="bootstrap-datepicker" level="application" />
     <orderEntry type="module" module-name="crawley" />
     <orderEntry type="module" module-name="facenet_fr" />
+    <orderEntry type="module" module-name="knn_fr" />
+    <orderEntry type="module" module-name="Project Task 2" />
+    <orderEntry type="module" module-name="Lab2" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />

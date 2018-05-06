@@ -4,7 +4,6 @@ import sys, requests, ast
 import gmplot, os
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
-from full_countries import countries
 import numpy as np
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, send_from_directory
@@ -47,7 +46,7 @@ app.config['UPLOAD_FOLDER'] = 'data/'
 app.config['THUMBNAIL_FOLDER'] = 'data/thumbnail/'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set(['gif', 'png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = set(['gif', 'png', 'jpg', 'jpeg', 'bmp'])
 IGNORED_FILES = set(['.gitignore'])
 
 bootstrap = Bootstrap(app)
@@ -711,4 +710,4 @@ def upload_files():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='10.20.57.111', debug=True)
