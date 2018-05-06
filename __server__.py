@@ -491,62 +491,72 @@ def crawl_return():
             # take only a single list to avoid duplicates
             response = (ast.literal_eval(str(response.text))).values()[0]
             # get unique urls to avoid duplicates
-            info_list = set()
-            try:
-                for res in response:
-                    info_list.add(res.split('/')[2])
-                    print('On unique url: {}'.format(res))
-                info_list = list(info_list)
-            except Exception as e:
-                print('URL Stripping Error!')
-                print(e)
-
-
-            # Fetch the url information of the urls
-            url_info_api = 'http://localhost:8100/api/get_url_info'
-            url_lists = {'url_list': info_list}
-            url_info_api_response  = requests.post(url=url_info_api, data=json.dumps(url_lists))
-            url_info_api_response = (ast.literal_eval(str(url_info_api_response.text))).values()[0]
-            # print('URL INFORMATION')
-            # print(url_info_api_response)
-
-            # insert the data into the gisdb
-            result, error = gis_db.insertDictData(url_info_api_response)
-            if result:
-                flash('Url information has been saved to database successfully!')
-                print('Url information has been saved to database successfully!')
+            if len(response) == 0:
+                message = []
+                message.append('Ouch!, Search returned nothing. Please check spellings or keywords and search again')
+                url_info_api_response = []
+                info_list = []
+                mymap = []
+                return render_template('crawl_results.html', code=303, response=response, inf_url=info_list,
+                                       url_info_response=url_info_api_response, f_u=str(full_url),
+                                       message=message, mymap=mymap)
             else:
-                flash('Problems encountered saving information to database.'
-                          ' Please refresh page to try again!'+' ('+str(error)+')')
-                print('Problems encountered saving information to database!.'
-                              ' Please refresh page to try again')
+                info_list = set()
+                try:
+                    for res in response:
+                        info_list.add(res.split('/')[2])
+                        print('On unique url: {}'.format(res))
+                    info_list = list(info_list)
+                except Exception as e:
+                    print('URL Stripping Error!')
+                    print(e)
 
-            # get a string list of the longitude and latitude sep by a comma
-            long_lat_list = []
-            for dict_item in url_info_api_response:
-                long_lat_list.append(dict_item.get("loc"))
 
-            # segregate into only longitudes and latitudes
-            longitudes = []
-            latitudes = []
+                # Fetch the url information of the urls
+                url_info_api = 'http://localhost:8100/api/get_url_info'
+                url_lists = {'url_list': info_list}
+                url_info_api_response  = requests.post(url=url_info_api, data=json.dumps(url_lists))
+                url_info_api_response = (ast.literal_eval(str(url_info_api_response.text))).values()[0]
+                # print('URL INFORMATION')
+                # print(url_info_api_response)
 
-            for val in long_lat_list:
-                longitudes.append(float(val.split(',')[0]))
-                latitudes.append(float(val.split(',')[1]))
+                # insert the data into the gisdb
+                result, error = gis_db.insertDictData(url_info_api_response)
+                if result:
+                    flash('Url information has been saved to database successfully!')
+                    print('Url information has been saved to database successfully!')
+                else:
+                    flash('Problems encountered saving information to database.'
+                              ' Please refresh page to try again!'+' ('+str(error)+')')
+                    print('Problems encountered saving information to database!.'
+                                  ' Please refresh page to try again')
 
-            # plot with google maps with initial center being the first long. and lat. in the list
-            mymap = Map(
-                identifier="view-side",
-                lat = float(long_lat_list[0].split(',')[1]),
-                lng = float(long_lat_list[0].split(',')[0]),
-                zoom = 1,
-                markers = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)],
-                fit_markers_to_bounds=True
-            )
+                # get a string list of the longitude and latitude sep by a comma
+                long_lat_list = []
+                for dict_item in url_info_api_response:
+                    long_lat_list.append(dict_item.get("loc"))
 
-            return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
-                                  url_info_response = url_info_api_response,  f_u = str(full_url),
-                                   mymap = mymap)
+                # segregate into only longitudes and latitudes
+                longitudes = []
+                latitudes = []
+
+                for val in long_lat_list:
+                    longitudes.append(float(val.split(',')[0]))
+                    latitudes.append(float(val.split(',')[1]))
+
+                # plot with google maps with initial center being the first long. and lat. in the list
+                mymap = Map(
+                    identifier="view-side",
+                    lat = float(long_lat_list[0].split(',')[1]),
+                    lng = float(long_lat_list[0].split(',')[0]),
+                    zoom = 1,
+                    markers = [(longitude, latitude) for longitude, latitude in zip(longitudes, latitudes)],
+                    fit_markers_to_bounds=True
+                )
+
+                return render_template('crawl_results.html', code=303, response = response, inf_url = info_list,
+                                      url_info_response = url_info_api_response,  f_u = str(full_url),
+                                       mymap = mymap)
         except Exception as e:
             print(str(e))
             return render_template('internal_server_error.html')
@@ -710,4 +720,4 @@ def upload_files():
 
 
 if __name__ == '__main__':
-    app.run(host='10.20.57.111', debug=True)
+    app.run()

@@ -298,12 +298,16 @@
                 {#                                <th>Crawled urls from: {{ f_u }} </th>#}
                 {#                            </tr>#}
                 {#                        </thead>#}
+                                        {#         For empty searches    #}
+                                            {% for item in message %}
+                                                    <h2><strong>{{ item }}</strong></h2>
+                                            {% endfor %}
                                         <tbody>
-                                        {% for item in response %}
-                                            <tr class="odd gradeX">
-                                                <td><a href="{{ item }}" target="_blank">{{ item }}</a></td>
-                                            </tr>
-                                        {% endfor %}
+                                            {% for item in response %}
+                                                <tr class="odd gradeX">
+                                                    <td><a href="{{ item }}" target="_blank">{{ item }}</a></td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
