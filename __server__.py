@@ -1,10 +1,9 @@
 import json
 from random import randint
 import sys, requests, ast
-import gmplot, os
+import os
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
-import numpy as np
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, send_from_directory
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
@@ -493,7 +492,8 @@ def crawl_return():
             # get unique urls to avoid duplicates
             if len(response) == 0:
                 message = []
-                message.append('Ouch!, Search returned nothing. Please check spellings or keywords and search again')
+                message.append('Ouch!, Search returned nothing. Please check internet connection, spelling '
+                               'or keywords and search again')
                 url_info_api_response = []
                 info_list = []
                 mymap = []
@@ -563,27 +563,6 @@ def crawl_return():
     return render_template('crawley.html')
 
 
-# @app.route('/crawl_return/', methods=['GET', 'POST'])
-# def crawl_return():
-#     if request.method == 'GET':
-#         render_template('crawley.html')
-#
-#     elif request.method == 'POST':
-#         # The following four lines send a command to start the crawler
-#         full_url = request.form['url']
-#         json_url = {'url': str(full_url)}
-#         post_url = 'http://localhost:8100/api/start_crawler'
-#         post_url_response = requests.post(url=post_url, data=json.dumps(json_url))
-#
-#         # These lines also sends a get_request to get the fetched data available
-#         get_data_url = 'http://localhost:8100/api/fetch_data'
-#         get_data_url_response = requests.get(get_data_url)
-#         get_data_url_response = (ast.literal_eval(str(get_data_url_response.text))).values()[0]
-#         print(get_data_url_response)
-#         return render_template('crawl_results.html', code=303, response = get_data_url_response, f_u = str(full_url))
-#     return render_template('crawley.html')
-
-
 # COMPUTER VISION FACIAL RECOGNITION PORTION
 
 def allowed_file(filename):
@@ -625,6 +604,7 @@ def create_thumbnail(image):
 def upload():
     if request.method == 'POST':
         files = request.files['file']
+        selected_algorithm = request.form['rec_algo_select']
 
         if files:
             filename = secure_filename(files.filename)
@@ -641,7 +621,12 @@ def upload():
                 files.save(uploaded_file_path)
 
                 # FACE RECOGNITION PROCESS
-                recognition_url = 'http://localhost:5030/api/face_recognition'
+                if selected_algorithm == 'facenet':
+                    recognition_url = 'http://localhost:5030/api/facenet_recognition'
+                    print('FaceNet Selected')
+                elif selected_algorithm == 'knn':
+                    recognition_url = 'http://localhost:6030/api/knn_recognition'
+                    print('KNN Selected')
                 # prepare headers for http request
                 content_type = 'image/jpeg'
                 headers = {'content-type': content_type}
@@ -717,7 +702,6 @@ def get_file(filename):
 @app.route('/upload_files', methods=['GET', 'POST'])
 def upload_files():
     return render_template('recognition.html')
-
 
 if __name__ == '__main__':
     app.run()

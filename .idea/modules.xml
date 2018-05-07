@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/PycharmProjects/open-cv-projects/fr_knn/Face-Recognition-knn/.idea/Face-Recognition.iml" filepath="$USER_HOME$/PycharmProjects/open-cv-projects/fr_knn/Face-Recognition-knn/.idea/Face-Recognition.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../CVR/Labs/Lab2/.idea/Lab2.iml" filepath="$PROJECT_DIR$/../../../CVR/Labs/Lab2/.idea/Lab2.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../CVR/Project/Project_2/Project 2 Resources/Project Task 2/.idea/Project Task 2.iml" filepath="$PROJECT_DIR$/../../../CVR/Project/Project_2/Project 2 Resources/Project Task 2/.idea/Project Task 2.iml" />
       <module fileurl="file://$USER_HOME$/PycharmProjects/keras-learn/crawley/.idea/crawley.iml" filepath="$USER_HOME$/PycharmProjects/keras-learn/crawley/.idea/crawley.iml" />

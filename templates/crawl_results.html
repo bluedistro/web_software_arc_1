@@ -35,6 +35,18 @@
     {{ mymap.js }}
 
     <style>
+
+        table, td, tr, tbody {
+            border-left: 0px !important;
+            border-right: 0px !important;
+            border-top: 0px !important;
+
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
         #map {
             width: 100%;
             height: 100%;
@@ -159,14 +171,14 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
+{#                            <div class="input-group custom-search-form">#}
+{#                                <input type="text" class="form-control" placeholder="Search...">#}
+{#                                <span class="input-group-btn">#}
+{#                                    <button class="btn btn-default" type="button">#}
+{#                                        <i class="fa fa-search"></i>#}
+{#                                    </button>#}
+{#                                </span>#}
+{#                            </div>#}
                             <!-- /input-group -->
                         </li>
                         <li>
@@ -289,7 +301,7 @@
                                         <span style="color: yellow; font-family: KacstLetter; font-weight: bolder">l</span>
                                         <span style="color: green; font-family: KacstLetter; font-weight: bolder">e</span>
                                         <span style="color: red; font-family: KacstLetter; font-weight: bolder">r</span> |
-                                        Search results for: <a href="{{ f_u }}" target="_blank"><span style="color: #5bc0de">{{ f_u }}</span></a>
+                                        Search results for: <span style="color: #5bc0de">{{ f_u }}</span>
                                       </h3>
                                     </div>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -305,7 +317,7 @@
                                         <tbody>
                                             {% for item in response %}
                                                 <tr class="odd gradeX">
-                                                    <td><a href="{{ item }}" target="_blank">{{ item }}</a></td>
+                                                    <td><a href="{{ item }}">{{ item }}</a></td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -330,7 +342,7 @@
                                         <tbody>
                                         {% for url, info in inf_url|zip(url_info_response) %}
                                             <tr class="odd gradeX">
-                                                <td><a href="{{ url }}">{{ url }}</a></td>
+                                                <td>{{ url }}</td>
                                                 <td>{{ info.loc }}</td>
                                                 <td>{{ info.city }}</td>
                                                 <td>{{ info.region }}</td>

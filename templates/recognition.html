@@ -61,6 +61,10 @@
 
         input[type='text']{ font-size: 17px; }
 
+        input[type='checkbox']{
+            border-radius: 0 !important;
+        }
+
         .search {
             padding: 5px 0;
             width: 330px;
@@ -97,6 +101,30 @@
             right: 0;
             top: 5px;
             border-radius:1px;
+        }
+
+        .btn {
+            border-radius: 0 !important;
+        }
+
+        select {
+            border-radius: 0 !important;
+        }
+
+        checkbox {
+
+        }
+
+        .progress {
+            border-radius: 0 !important;
+        }
+
+        .progress-bar {
+            border-radius: 0 !important;
+        }
+
+        .progress-extended {
+            border-radius: 0 !important;
         }
 
 
@@ -213,6 +241,10 @@
                         <div class="row fileupload-buttonbar">
                             <div class="col-lg-12">
                                 <!-- The fileinput-button span is used to style the file input field as button -->
+                                <select name="rec_algo_select">
+                                    <option value="knn" selected>KNN</option>
+                                    <option value="facenet">FaceNet</option>
+                                </select>
                                 <span class="btn btn-success fileinput-button">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     <span>Add image files...</span>

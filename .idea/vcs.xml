@@ -4,5 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$USER_HOME$/Documents/file-uploads/HTML5-jQuery-Flask-file-upload" vcs="Git" />
     <mapping directory="$USER_HOME$/Documents/file-uploads/flask-file-uploader" vcs="Git" />
+    <mapping directory="$USER_HOME$/PycharmProjects/open-cv-projects/fr_knn/Face-Recognition" vcs="Git" />
+    <mapping directory="$USER_HOME$/PycharmProjects/open-cv-projects/fr_knn/Face-Recognition-KNN" vcs="Git" />
   </component>
 </project>

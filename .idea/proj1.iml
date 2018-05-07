@@ -10,6 +10,7 @@
     <orderEntry type="module" module-name="knn_fr" />
     <orderEntry type="module" module-name="Project Task 2" />
     <orderEntry type="module" module-name="Lab2" />
+    <orderEntry type="module" module-name="Face-Recognition" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
