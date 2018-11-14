@@ -622,7 +622,7 @@ def upload():
 
                 # FACE RECOGNITION PROCESS
                 if selected_algorithm == 'facenet':
-                    recognition_url = 'http://localhost:5030/api/facenet_recognition'
+                    recognition_url = 'http://localhost:5030/api/face_recognition'
                     print('FaceNet Selected')
                 elif selected_algorithm == 'knn':
                     recognition_url = 'http://localhost:6030/api/knn_recognition'
