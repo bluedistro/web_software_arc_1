@@ -6,7 +6,7 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, abort, send_from_directory
-from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 
 # FACE RECOGNITION
 import PIL
